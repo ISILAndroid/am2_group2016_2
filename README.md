@@ -13,4 +13,5 @@ Fragments (S1-S3)
 
 Referencias:
 [Fragments Fundamentals](https://developer.android.com/training/basics/fragments/index.html)
+
 [Dyanmic UI with Fragments](https://developer.android.com/training/basics/fragments/creating.html)
