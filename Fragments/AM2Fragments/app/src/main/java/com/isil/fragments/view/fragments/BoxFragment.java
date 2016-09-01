@@ -1,6 +1,7 @@
 package com.isil.fragments.view.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -97,6 +98,22 @@ public class BoxFragment extends Fragment {
         //CODE...
 
         flayBox= (FrameLayout)getView().findViewById(R.id.flayBox);
+    }
+
+    public void recibirColoryPintar(int position){
+        int color=0;
+        switch (position){
+            case 0: //morado
+                color= Color.CYAN;
+                break;
+            case 1://rojo
+                color= Color.RED;
+                break;
+            case 2: //amarillo
+                color= Color.YELLOW;
+                break;
+        }
+        flayBox.setBackgroundColor(color);
     }
 
 }

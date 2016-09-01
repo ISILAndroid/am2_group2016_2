@@ -21,7 +21,7 @@ import com.isil.fragments.view.OnColorListener;
  * Use the {@link FooterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FooterFragment extends Fragment {
+public class FooterFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -100,5 +100,29 @@ public class FooterFragment extends Fragment {
         btnBox0= (Button)getView().findViewById(R.id.btnBox0);
         btnBox1= (Button)getView().findViewById(R.id.btnBox1);
         btnBox2= (Button)getView().findViewById(R.id.btnBox2);
+
+        btnBox0.setOnClickListener(this);
+        btnBox1.setOnClickListener(this);
+        btnBox2.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos=-1;
+        switch (v.getId()){
+            case R.id.btnBox0:
+                     pos=0;
+                break;
+            case R.id.btnBox1:
+                    pos=1;
+                break;
+            case R.id.btnBox2:
+                    pos=2;
+                break;
+        }
+
+        if(pos>=0){
+            mListener.seleccionarColor(pos);
+        }
     }
 }
