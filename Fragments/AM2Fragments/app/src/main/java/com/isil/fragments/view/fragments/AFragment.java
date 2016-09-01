@@ -2,10 +2,12 @@ package com.isil.fragments.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.isil.fragments.R;
 import com.isil.fragments.view.OnFragmentListener;
@@ -86,5 +88,14 @@ public class AFragment extends Fragment {
         mListener = null;
     }
 
-
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"FragmentA ",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

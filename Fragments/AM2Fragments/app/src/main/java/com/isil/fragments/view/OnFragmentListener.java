@@ -6,4 +6,6 @@ package com.isil.fragments.view;
 public interface OnFragmentListener {
 
     void onSendMessage(String msg);
+    void comunicarFAconFB();
+    void comunicarFBconFA();
 }

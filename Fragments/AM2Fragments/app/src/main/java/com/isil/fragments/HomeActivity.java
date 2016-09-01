@@ -48,4 +48,14 @@ public class HomeActivity extends ActionBarActivity implements OnFragmentListene
     public void onSendMessage(String msg) {
 
     }
+
+    @Override
+    public void comunicarFAconFB() {
+
+    }
+
+    @Override
+    public void comunicarFBconFA() {
+
+    }
 }

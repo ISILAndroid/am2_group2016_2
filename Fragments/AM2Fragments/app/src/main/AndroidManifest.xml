@@ -10,11 +10,14 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".HomeActivity"
@@ -28,11 +31,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
+
         </activity>
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message"
             android:screenOrientation="landscape">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".DynamicFragActivity">
 
             <!--
             <intent-filter>
@@ -42,12 +53,32 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".DynamicFragActivity">
+        <activity
+            android:name=".SampleActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".Main2Activity">
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
+        </activity>
+        <activity android:name=".MyActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ColorActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 
