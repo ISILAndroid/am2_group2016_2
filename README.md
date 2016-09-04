@@ -12,31 +12,14 @@ Fragments (S1-S3)
 - Navegación usando fragments.
 - Ejemplos.
 
-Persistencia de Datos (S4-S6)
-- Preferencias de Usuario
-- Base de datos Sqlite
-- Ejemplos , CRUD
-- ORM, uso de ORMLite
+Implementing Effective Navigation
+  * Creating Swipe Views with Tabs
+  * Creating a Navigation Drawer
+  * Using ViewPager for Screen Slides
 
-Conexión Remota (S7-S8)
-- Conexión RestFul, json y mappers.
-- Uso de Retrofit y Gson
-- Conexión con el Rest APi de Backendless
-- Ejemplos GET, POST, LogIn
-
-Geolocalización y Google Maps API (S9-S10)
-- Google Play Services
-- Google Maps API
-- Ejemplos
-
-Multimedia (S11-S12)
-- Animaciones
-- Uso de cámara, audio y vídeo.
-- Ejemplos
-
-Google Play (S13)
-- Google Play developer console
-
-Entrega de Proyectos.(S14-S15)
-- Presentación de proyectos.
+References 
+  - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
+  - Swipe Tabs [https://developer.android.com/training/implementing-navigation/lateral.html](https://developer.android.com/training/implementing-navigation/lateral.html)
+  - Navigation Drawer [https://developer.android.com/training/implementing-navigation/nav-drawer.html](https://developer.android.com/training/implementing-navigation/nav-drawer.html)
+  
 
