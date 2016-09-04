@@ -1,9 +1,4 @@
-# am2_group2016_2
-Curso de Aplicaciones Móviles II - Grupo 2016-I
-
-Instructor : Eduardo José Medina Alfaro - email: isil@qd.pe
-
-Temario :
+# am2_group2016_2 Lesson 3
 
 Fragments (S1-S3)
 
@@ -12,10 +7,16 @@ Fragments (S1-S3)
 - Navegación usando fragments.
 - Ejemplos.
 
-Implementing Effective Navigation
-  * Creating Swipe Views with Tabs
-  * Creating a Navigation Drawer
-  * Using ViewPager for Screen Slides
+Group Activities
+
+    Group Activity #1 : Fragment Basics
+     * Contact list
+     * Product list
+     * Filter books
+    Group Activity #2 : Implementing Effective Navigation
+    * Creating Swipe Views with Tabs
+    * Creating a Navigation Drawer
+    * Using ViewPager for Screen Slides
 
 References 
   - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
