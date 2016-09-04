@@ -12,6 +12,11 @@ Fragments (S1-S3)
 - Navegación usando fragments.
 - Ejemplos.
 
+Implementing Effective Navigation
+  * Creating Swipe Views with Tabs
+  * Creating a Navigation Drawer
+  * Using ViewPager for Screen Slides
+
 References 
   - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
   - Swipe Tabs [https://developer.android.com/training/implementing-navigation/lateral.html](https://developer.android.com/training/implementing-navigation/lateral.html)
