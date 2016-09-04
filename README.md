@@ -28,13 +28,13 @@ Fragments (S1-S3)
       
 2. Implementing Effective Navigation
    
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation01.png" height="300">
+      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation01.png" height="480">
 
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation02.png" height="300">
+      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation02.png" height="480">
       
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation03.png" height="300">
+      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation03.png" height="480">
       
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation04.png" height="300">
+      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation04.png" height="480">
 
 References 
   - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
