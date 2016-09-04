@@ -9,11 +9,12 @@ Fragments (S1-S3)
 
 Group Activities
 
-    Group Activity #1 : Fragment Basics
+Group Activity #1 : Fragment Basics
      * Contact list
      * Product list
      * Filter books
-    Group Activity #2 : Implementing Effective Navigation
+    
+Group Activity #2 : Implementing Effective Navigation
     * Creating Swipe Views with Tabs
     * Creating a Navigation Drawer
     * Using ViewPager for Screen Slides
