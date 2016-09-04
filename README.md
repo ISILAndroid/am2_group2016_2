@@ -20,7 +20,7 @@ Fragments (S1-S3)
 
 1. Fragment Basics
    
-      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png =200x200)
+      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png " height="200">
 
       ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics02.png)
       
