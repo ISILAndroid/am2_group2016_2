@@ -1,6 +1,7 @@
 package com.isil.am2.template.ui.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import com.isil.am2.template.R;
 import com.isil.am2.template.model.ContactEntity;
 import com.isil.am2.template.ui.OnContactListener;
+import com.isil.am2.template.ui.OnKindleListener;
 import com.isil.am2.template.ui.adapters.ContactAdapter;
 
 import java.util.ArrayList;
@@ -80,12 +82,12 @@ public class ContactsFragment extends Fragment {
 
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnContactListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnContactListener) {
+            mListener = (OnContactListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }

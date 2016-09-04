@@ -17,6 +17,8 @@
             android:padding="40dp"
             android:layout_marginBottom="4dp"
             android:text="Contacts"
+            android:textColor="#FFFFFF"
+            android:background="#FF7043"
             android:id="@+id/btnContacts"/>
 
         <Button
@@ -25,6 +27,8 @@
             android:padding="40dp"
             android:layout_marginBottom="4dp"
             android:text="Products"
+            android:textColor="#FFFFFF"
+            android:background="#1976D2"
             android:id="@+id/btnProducts"/>
 
         <Button
@@ -32,6 +36,8 @@
             android:layout_height="wrap_content"
             android:padding="40dp"
             android:layout_marginBottom="4dp"
+            android:background="#AB47BC"
+            android:textColor="#FFFFFF"
             android:text="Books"
             android:id="@+id/btnBooks"/>
     </LinearLayout>
