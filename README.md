@@ -20,7 +20,7 @@ Fragments (S1-S3)
 
 1. Fragment Basics
    
-      ![img](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png)
+      ![img](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png =200)
 
       ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics02.png)
       
@@ -42,7 +42,3 @@ References
   - Swipe Tabs [https://developer.android.com/training/implementing-navigation/lateral.html](https://developer.android.com/training/implementing-navigation/lateral.html)
   - Navigation Drawer [https://developer.android.com/training/implementing-navigation/nav-drawer.html](https://developer.android.com/training/implementing-navigation/nav-drawer.html)
   
-img[alt="img"] { 
-  max-width:  20px; 
-  display: block;
-}
