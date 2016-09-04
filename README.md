@@ -6,6 +6,7 @@ Fragments (S1-S3)
 - Comunicación entre fragments.
 - Navegación usando fragments.
 - Group Activities
+
     * Group Activity #1 : Fragment Basics
         - Contact list
         - Product list
@@ -14,6 +15,25 @@ Fragments (S1-S3)
         - Creating Swipe Views with Tabs
         - Creating a Navigation Drawer
         - Using ViewPager for Screen Slides
+   
+   1. Fragment Basics
+   
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png)
+
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics02.png)
+      
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics03.png)
+      
+   2. Implementing Effective Navigation
+   
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation01.png)
+
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation02.png)
+      
+      ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation03.png)
+      
+        ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation04.png)
+
 
 References 
   - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
