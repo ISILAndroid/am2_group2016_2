@@ -1,6 +1,8 @@
 package com.isil.am2.template;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-public class NavigationDrawerActivity extends AppCompatActivity {
+import com.isil.am2.template.ui.OnNavListener;
+import com.isil.am2.template.ui.fragments.AndroidFragment;
+import com.isil.am2.template.ui.fragments.BugFragment;
+import com.isil.am2.template.ui.fragments.HelpFragment;
+
+public class NavigationDrawerActivity extends AppCompatActivity implements OnNavListener {
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -48,16 +55,18 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.menuAndroid:
-
+                            changeFragment(0);
                         return true;
 
                     // For rest of the options we just show a toast on click
 
                     case R.id.menuAndroidBug:
                         //Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
+                            changeFragment(1);
                         return true;
                     case R.id.menuAndroidHelp:
                         //Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                            changeFragment(2);
                         return true;
 
                     default:
@@ -92,5 +101,25 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     //calling sync state is necessay or else your hamburger icon wont show up
     actionBarDrawerToggle.syncState();
 
+    }
+
+    private void changeFragment(int i) {
+        Fragment fragment=null;
+        switch (i){
+            case 0:
+                fragment= new AndroidFragment();
+                break;
+            case 1:
+                fragment= new BugFragment();
+                break;
+            case 2:
+                fragment= new HelpFragment();
+                break;
+        }
+        if(fragment!=null){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame,fragment);
+            fragmentTransaction.commit();
+        }
     }
 }

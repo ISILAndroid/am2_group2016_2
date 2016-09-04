@@ -2,16 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.CTabFragment"
-    android:background="#673AB7">
+    tools:context="com.isil.am2.template.ui.fragments.BugFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="C FRAGMENT" />
+        android:src="@mipmap/ic_android_bug"/>
 
 </FrameLayout>
