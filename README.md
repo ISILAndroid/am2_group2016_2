@@ -6,14 +6,11 @@ Fragments (S1-S3)
 - Comunicación entre fragments.
 - Navegación usando fragments.
 - Ejemplos.
-
-Group Activities
-
-Group Activity #1 : Fragment Basics
-
-     * Contact list
-     * Product list
-     * Filter books
+- Group Activities
+    * Group Activity #1 : Fragment Basics
+        - Contact list
+        - Product list
+        - Filter books
     
 Group Activity #2 : Implementing Effective Navigation
 
