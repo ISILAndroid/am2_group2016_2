@@ -8,10 +8,44 @@ Ejercicio sobre uso de Callbacks para la comunidaciòn entre fragments
   
   1. Para esto vamos a crear un actividad llamada ColorActivity, este nos va a servir de contenedor para los Fragments.
   
+  ```
+    package com.isil.fragments;
+
+    import android.support.v4.app.FragmentManager;
+    import android.support.v7.app.AppCompatActivity;
+    import android.os.Bundle;
+    
+    import com.isil.fragments.view.OnColorListener;
+    import com.isil.fragments.view.fragments.BoxFragment;
+    import com.isil.fragments.view.fragments.FooterFragment;
+    
+    public class ColorActivity extends AppCompatActivity implements OnColorListener {
+    
+        private FooterFragment footerFragment;
+        private BoxFragment boxFragment;
+        private FragmentManager fragmentManager;
+    
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_color);
+            fragmentManager= getSupportFragmentManager();
+    
+            footerFragment= (FooterFragment) fragmentManager.findFragmentById(R.id.fragFooter);
+            boxFragment= (BoxFragment) fragmentManager.findFragmentById(R.id.fragBox);
+        }
+    
+        @Override
+        public void seleccionarColor(int pos) {
+            //Boxfragment
+            boxFragment.recibirColoryPintar(pos);
+    
+        }
+    }
+  ```
+  
   2. Luego vamos a necesitar crear 2 fragments , FooterFragment que contiene los botones con colores y BoxFragment que es un caja donde pintaremos el color elegido.
-  
-  3. Para poner tener esa distribuciòn (diseño) necesitamos modificar el XMl de ColorActivity, utilizar un layout tipo LinearLayout y jugar con los pesos en vertical. En este caso la proporciòn serìa de 8/2 o 7/3 , donde la parte superior tendria el mayor peso. En nuestro contenedor (LinearLayout) vamos a agregar los 2 fragment, BoxFragment primero y luego FooterFragment.
-  
+
   BoxFragment
   ```
     package com.isil.fragments.view.fragments;
@@ -267,9 +301,37 @@ Ejercicio sobre uso de Callbacks para la comunidaciòn entre fragments
     }
   ```
   
+  3. Para poner tener esa distribuciòn (diseño) necesitamos modificar el XMl de ColorActivity, utilizar un layout tipo LinearLayout y jugar con los pesos en vertical. En este caso la proporciòn serìa de 8/2 o 7/3 , donde la parte superior tendria el mayor peso. En nuestro contenedor (LinearLayout) vamos a agregar los 2 fragment, BoxFragment primero y luego FooterFragment.
   
+  ```
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:context="com.isil.fragments.ColorActivity">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical">
   
+          <fragment
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="0.8"
+              android:name="com.isil.fragments.view.fragments.BoxFragment"
+              android:id="@+id/fragBox" />
   
+          <fragment
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="0.2"
+              android:name="com.isil.fragments.view.fragments.FooterFragment"
+              android:id="@+id/fragFooter" />
+      </LinearLayout>
+  </RelativeLayout>
+  ```
+
   4. Lo siguiente serìa definir un calback para poder "pasar" el color seleccionado de un Fragment a otro. Esto lo hacemos creando un interfaz llamada "OnColorListener" y creamos un mètodo llamado "seleccionarColor(color)" donde recibe como paràmetro el botòn seleccionado, es decir El primer botòn es 0, el siguiente 1, etc etc
   
   OnColorListener
@@ -307,7 +369,127 @@ Ejercicio sobre uso de Callbacks para la comunidaciòn entre fragments
     }
   ```
   
-  6. xxxx
+  6. Con lo anterior listo , vamos a programar la lògica en cada fragment
+      - Para el caso del FooterFragment, hay que asignar un evento de click a cada botòn y luego llamar al listener
+      - Con el BoxFragment, lo ùnico que necesitariamos es un mètodo que reciba la posiciòn del botòn y en base asignar un color a pintar
+    
+    FooterFragment
+    ```
+    private OnColorListener mListener;
+    private Button btnBox0;
+    private Button btnBox1;
+    private Button btnBox2;
+       @Override
+      public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+          super.onActivityCreated(savedInstanceState);
+          //CODE...
+  
+          btnBox0= (Button)getView().findViewById(R.id.btnBox0);
+          btnBox1= (Button)getView().findViewById(R.id.btnBox1);
+          btnBox2= (Button)getView().findViewById(R.id.btnBox2);
+  
+          btnBox0.setOnClickListener(this);
+          btnBox1.setOnClickListener(this);
+          btnBox2.setOnClickListener(this);
+      }
+  
+      @Override
+      public void onClick(View v) {
+          int pos=-1;
+          switch (v.getId()){
+              case R.id.btnBox0:
+                       pos=0;
+                  break;
+              case R.id.btnBox1:
+                      pos=1;
+                  break;
+              case R.id.btnBox2:
+                      pos=2;
+                  break;
+          }
+  
+          if(pos>=0){
+              mListener.seleccionarColor(pos);
+          }
+    }
+  ```
+  BoxFragment
+  ```
+    private OnColorListener mListener;
+    private FrameLayout flayBox;
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //CODE...
+
+        flayBox= (FrameLayout)getView().findViewById(R.id.flayBox);
+    }
+
+    public void recibirColoryPintar(int position){
+        int color=0;
+        switch (position){
+            case 0: //morado
+                color= Color.CYAN;
+                break;
+            case 1://rojo
+                color= Color.RED;
+                break;
+            case 2: //amarillo
+                color= Color.YELLOW;
+                break;
+        }
+        flayBox.setBackgroundColor(color);
+    }
+  ```
+  
+
+  7. Deberiamos acceder a los Fragments desde la actividad que contiene y siempre hacer que implemente el listener que esperan los fragments, en este caso OnColorListener. Vamos a poder acceder a los fragments con un elemento llamado "FragmentManager" donde los invocamos muy parecido a como se hace con los botones , textos, textos editables, etc etc.
+  ```
+    package com.isil.fragments;
+
+    import android.support.v4.app.FragmentManager;
+    import android.support.v7.app.AppCompatActivity;
+    import android.os.Bundle;
+    
+    import com.isil.fragments.view.OnColorListener;
+    import com.isil.fragments.view.fragments.BoxFragment;
+    import com.isil.fragments.view.fragments.FooterFragment;
+    
+    public class ColorActivity extends AppCompatActivity implements OnColorListener {
+    
+        private FooterFragment footerFragment;
+        private BoxFragment boxFragment;
+        private FragmentManager fragmentManager;
+    
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_color);
+            fragmentManager= getSupportFragmentManager();
+    
+            footerFragment= (FooterFragment) fragmentManager.findFragmentById(R.id.fragFooter);
+            boxFragment= (BoxFragment) fragmentManager.findFragmentById(R.id.fragBox);
+        }
+    
+        @Override
+        public void seleccionarColor(int pos) {
+            //Boxfragment
+            boxFragment.recibirColoryPintar(pos);
+    
+        }
+    }
+  ```
+  
+  8. Finalmente, hacemos la conexiòn entre BoxFragment y FooterFragment llamando a los mètodos asignados en cada uno.
+    ```
+    @Override
+    public void seleccionarColor(int pos) {
+        //Boxfragment
+        boxFragment.recibirColoryPintar(pos);
+
+    } 
+    ```
+    
 
   
   
