@@ -2,7 +2,7 @@
 
 Ejercicio sobre uso de Callbacks para la comunidaciòn entre fragments
 
-  <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Practice01/SampleColors.png" height="300">
+  <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Practice01/SampleColors.png" height="480">
   
   Este ejercicio se refiere a poder seleccionar un color de la barra inferior y  pintar en la parte superior el color correspondiente.
   
