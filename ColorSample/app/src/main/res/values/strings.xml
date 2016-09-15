@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ColorSample</string>
+    <string name="hello_world">Fragment</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Other fragment</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="one_fragment">Este es un Fragment</string>
+</resources>
