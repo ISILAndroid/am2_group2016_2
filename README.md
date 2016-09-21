@@ -17,6 +17,9 @@ App " MyNotes "
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Splash.png" height="480">
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Login.png" height="480">
 
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Agregar2.png" height="480">
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Editar_Eliminar.png" height="480">
+
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Listado%20de%20Notas.png" height="480">
 
 References 
