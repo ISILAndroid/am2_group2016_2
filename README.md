@@ -1,43 +1,19 @@
-# am2_group2016_2 Lesson 3
+# am2_group2016_2 Lesson 4
 
-Fragments (S1-S3)
+Persistencia de Datos (S4-S6)
 
-- Conceptos
-- Comunicación entre fragments.
-- Navegación usando fragments.
-- Group Activities
+- Preferencias de Usuario
+- Base de datos Sqlite
+- Ejemplos , CRUD
+- ORM, uso de ORMLite
+- Actividades Grupales
 
-    * Group Activity #1 : Fragment Basics
-        - Contact list
-        - Product list
-        - Filter books
-   * Group Activity #2 : Implementing Effective Navigation
-        - Creating Swipe Views with Tabs
-        - Creating a Navigation Drawer
-        - Using ViewPager for Screen Slides
-   
----
-
-1. Fragment Basics
-   
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics01.png" height="300">
-
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics02.png" height="300">
-      
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentBasics03.png" height="300">
-      
-2. Implementing Effective Navigation
-   
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation01.png" height="480">
-
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation02.png" height="480">
-      
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation03.png" height="480">
       
       <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation04.png" height="480">
 
 References 
-  - ViewPager [https://developer.android.com/training/animation/screen-slide.html](https://developer.android.com/training/animation/screen-slide.html)
-  - Swipe Tabs [https://developer.android.com/training/implementing-navigation/lateral.html](https://developer.android.com/training/implementing-navigation/lateral.html)
-  - Navigation Drawer [https://developer.android.com/training/implementing-navigation/nav-drawer.html](https://developer.android.com/training/implementing-navigation/nav-drawer.html)
+
+  - Storage Options [https://developer.android.com/guide/topics/data/data-storage.html](https://developer.android.com/guide/topics/data/data-storage.html)
+  - Saving Data [https://developer.android.com/training/basics/data-storage/index.html](https://developer.android.com/training/basics/data-storage/index.html)
+  
   
