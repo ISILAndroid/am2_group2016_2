@@ -7,9 +7,18 @@ Persistencia de Datos (S4-S6)
 - Ejemplos , CRUD
 - ORM, uso de ORMLite
 - Actividades Grupales
-
+      * Validar sesión del usuario
+      * Listar notas desde Base de Datos local
+      * Agregar y Editar notas desde Base de datos local
+      * Eliminar notas desde Base de Datos local
       
-      <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson3/images/FragmentNavigation04.png" height="480">
+App " MyNotes "
+
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Splash.png" height="480">
+
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Login.png" height="480">
+
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Listado%20de%20Notas.png" height="480">
 
 References 
 
