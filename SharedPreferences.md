@@ -127,5 +127,16 @@
         PreferencesHelper.saveSession(this,username,password);
     }
   ```
-
+  * Finalmente, ya sea que exista una sesión o tengamos un nuevo usuario autenticado , nos vamos a la clase MainActivity donde vamos a mostrar el nombre que se guardo sesión.
+  ```
+     //user Info
+      String username = PreferencesHelper.getUserSession(this);
+      if(username!=null)
+      {
+          tviUser.setText("Bienvenido "+ StringUtils.firstCapitalize(username));
+      }
+  ```
+  
+  * Si apagan el móvil o cierran la app y la vuelven abrir, la sesión va seguirá . Entonces cada vez que necesiten almacenar datos de sesión del tipo < Key , Value > deben usar Shared Preferences.
+  
 
