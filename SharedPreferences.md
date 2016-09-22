@@ -4,8 +4,18 @@
   donde normalmente los valores son variables primitivas , por ejemplo double, boolean, String.
 - Mientras no elimines la app del dispositivo o borres la cache ,podrás acceder o editar a  los elementos 
   guardados y se podrán acceder desde cualquier componente. Ejemplo Activity, Fragment , Service
+
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/BorrarCache.png" height="320">
+- Podemos tener un instancia del Shared Preferences de la siguiente manera :
   
-<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/BorrarCache.png" height="480">
+  ´´´
+      public static final String PREFS_NAME = "MyPrefsFile";
+  ´´´
+
+
+- Si necesitamos obtener un elemento del Shared Preferences
+- Cuando sea requerido editar las Shared Preferences
+- O si debemos limpiar la Shared Preferences 
 
 ### Actividad Grupal
   - Validar sesión del usuario
