@@ -8,14 +8,28 @@
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/BorrarCache.png" height="320">
 - Podemos tener un instancia del Shared Preferences de la siguiente manera :
   
-  ´´´
+  ```
       public static final String PREFS_NAME = "MyPrefsFile";
-  ´´´
+      SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
+  ```
+- Si necesitamos obtener un elemento de las preferencias
+  ```
+      SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+      boolean silent = settings.getBoolean("silentMode", false);
+  ```
+- Cuando sea requerido editar
+  ```
+    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    SharedPreferences.Editor editor = settings.edit();
+    editor.putBoolean("silentMode", mSilentMode);
 
-- Si necesitamos obtener un elemento del Shared Preferences
-- Cuando sea requerido editar las Shared Preferences
-- O si debemos limpiar la Shared Preferences 
+    // Commit the edits!
+    editor.commit();
+  ```
+- O si debemos limpiar las preferencias
+
+  
 
 ### Actividad Grupal
   - Validar sesión del usuario
