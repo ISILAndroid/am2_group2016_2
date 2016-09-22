@@ -10,25 +10,33 @@
   
   ```
       public static final String PREFS_NAME = "MyPrefsFile";
+      
       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
   ```
 - Si necesitamos obtener un elemento de las preferencias
   ```
       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+      
       boolean silent = settings.getBoolean("silentMode", false);
   ```
 - Cuando sea requerido editar
   ```
     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    
     SharedPreferences.Editor editor = settings.edit();
+    
     editor.putBoolean("silentMode", mSilentMode);
 
     // Commit the edits!
     editor.commit();
   ```
 - O si debemos limpiar las preferencias
-
+  ```
+    SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    
+    settings.edit().clear().commit();
+  ```
   
 
 ### Actividad Grupal
