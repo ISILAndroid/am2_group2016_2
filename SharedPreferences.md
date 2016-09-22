@@ -81,6 +81,18 @@
                 preferences.contains(PREFERENCES_PASSWORD);
     }
   ```
-  
+  * En la clase SplashActivity, que es la primera que se ejecuta , nosotros debemos validar si ya existe un sesión y en base a eso decidir a que pantalla ir.
+  ```
+    Intent intent;
+    boolean session= PreferencesHelper.isSignedIn(SplashActivity.this);
+    if(session)
+    {
+        intent=new Intent(SplashActivity.this, MainActivity.class);
+    }else {
+      intent = new Intent(SplashActivity.this, LoginActivity.class);
+    }
+    startActivity(intent);
+    finish();
+  ```
 
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/MyNotesSessionFlow.png" height="480">
