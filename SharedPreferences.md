@@ -5,6 +5,9 @@
 - Mientras no elimines la app del dispositivo o borres la cache ,podrás acceder o editar a  los elementos 
   guardados y se podrán acceder desde cualquier componente. Ejemplo Activity, Fragment , Service
   
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/BorrarCache.png" height="480">
 
 ### Actividad Grupal
   - Validar sesión del usuario
+
+<img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/MyNotesSessionFlow.png" height="480">
