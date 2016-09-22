@@ -40,7 +40,7 @@
   
 
 ### Actividad Grupal
-  - Validar sesión del usuario
+  Validar sesión del usuario
   * Para esto vamos a trabajar con las siguientes clases : SplashActivity.java , LogInActivity.java ,MainActivity.java y PreferencesHelper.java
   * La clase PreferencesHelper es un utilitario para manejar las preferencias en un solo lugar y de manera ordenada. Dandole la única responsabilidad de manejar las preferencias del usuario. Esta clase tiene 2 métodos principales donde se instancia las preferencias cada vez que sea necesario.
   
