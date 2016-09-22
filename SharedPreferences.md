@@ -82,6 +82,7 @@
     }
   ```
   * En la clase SplashActivity, que es la primera que se ejecuta , nosotros debemos validar si ya existe un sesión y en base a eso decidir a que pantalla ir.
+  
   ```
     Intent intent;
     boolean session= PreferencesHelper.isSignedIn(SplashActivity.this);
@@ -93,6 +94,35 @@
     }
     startActivity(intent);
     finish();
+  ```
+  * En el caso que no se iniciara sesión , vamos a la clase LoginActivity donde simulamos una autenticación y guardamos la sesión actual
+  ```
+    private void init() {
+      eteUsername=(EditText)findViewById(R.id.eteUsername);
+      etePassword=(EditText)findViewById(R.id.etePassword);
+      btnLogin=(Button)findViewById(R.id.btnLogin);
+
+      btnLogin.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              if (validateForm()) {
+                  gotoMain();
+              }
+          }
+      });
+    }
+
+    private void gotoMain() {
+
+        savePreferences();
+        Intent intent= new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void savePreferences() {
+
+        PreferencesHelper.saveSession(this,username,password);
+    }
   ```
 
 <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/MyNotesSessionFlow.png" height="480">
