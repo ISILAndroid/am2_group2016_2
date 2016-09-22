@@ -2,9 +2,8 @@
 
 Persistencia de Datos (S4-S6)
 
-- Preferencias de Usuario
-- Base de datos Sqlite
-- Ejemplos , CRUD
+- Preferencias de Usuario [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/SharedPreferences.md)
+- Base de datos Sqlite : Ejemplos , CRUD [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Lesson4-1.md)
 - ORM, uso de ORMLite
 - Actividades Grupales
       * Validar sesión del usuario
