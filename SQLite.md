@@ -162,8 +162,35 @@
         return lst;
     }
  ```
- 
+ 3.3 La actualización de un objeto NoteEntity
+ ```
+     public int updateNote(NoteEntity noteEntity)
+      {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_NAME, noteEntity.getName());
+        values.put(MyDatabase.KEY_DESC, noteEntity.getDescription());
+        values.put(MyDatabase.KEY_PATH, noteEntity.getPath());
 
+        return db.update(MyDatabase.TABLE_NOTES,
+            values,
+            MyDatabase.KEY_ID+"=?",
+            new String[]{String.valueOf(noteEntity.getId())});
+    }
+ ```
+ 
+ 3.4 Finalmente si necesitamos eliminar un registro
+ ```
+   public int deleteNote(NoteEntity noteEntity)
+    {
+       SQLiteDatabase db = helper.getWritableDatabase(); 
+       int row= db.delete(MyDatabase.TABLE_NOTES,
+           MyDatabase.KEY_ID+"=?", 
+           new String[]{String.valueOf(noteEntity.getId())});
+       db.close();
+      return row;
+  }
+ ```
   
 #### Listado de Notas
  - MainActivity.java 
