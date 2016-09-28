@@ -1,12 +1,10 @@
-# am2_group2016_2 Lesson 4
+# am2_group2016_2 Lesson 5
 
 Persistencia de Datos (S4-S6)
 
-- Preferencias de Usuario [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/SharedPreferences.md)
 - Base de datos Sqlite : Ejemplos , CRUD [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson4/Lesson4-1.md)
 - ORM, uso de ORMLite
 - Actividades Grupales
-      * Validar sesión del usuario
       * Listar notas desde Base de Datos local
       * Agregar y Editar notas desde Base de datos local
       * Eliminar notas desde Base de Datos local
