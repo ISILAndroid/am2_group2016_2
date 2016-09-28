@@ -162,7 +162,7 @@
         return lst;
     }
  ```
- 3.3 La actualización de un objeto NoteEntity
+ 3.4 La actualización de un objeto NoteEntity
  ```
      public int updateNote(NoteEntity noteEntity)
       {
@@ -179,7 +179,7 @@
     }
  ```
  
- 3.4 Finalmente si necesitamos eliminar un registro
+ 3.5 Finalmente si necesitamos eliminar un registro
  ```
    public int deleteNote(NoteEntity noteEntity)
     {
@@ -221,10 +221,7 @@
 
     }
  ```
- 
-#### Agregar Notas
-#### Editar Notas
-#### Eliminar Notas
+
  
 
 
