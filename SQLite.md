@@ -6,7 +6,8 @@
 ### Aplicación MyNotes
 
   - Listado de Notas
-<img src="https://github.com/ISILAndroid/am2_group2016_1/blob/Lesson4/screenshots/Listado%20de%20Notas.png" height="480">
+  
+  <img src="https://github.com/ISILAndroid/am2_group2016_1/blob/Lesson4/screenshots/Listado%20de%20Notas.png" height="480">
 
 #### Listado de Notas
  - MainActivity.java 
