@@ -14,7 +14,7 @@ public class MyDatabase extends SQLiteOpenHelper {
  
     public static final String TABLE_NOTES = "tb_notes";
     
-    //Columnas de la Tabla Contacts
+    //Columnas de la Tabla Notes
     public static final String KEY_ID = "id";
     public static final String KEY_NAME = "name";
     public static final String KEY_DESC = "desc";

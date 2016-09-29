@@ -56,7 +56,7 @@ public class CRUDOperations {
 	{
 		List<NoteEntity> lst =new ArrayList<NoteEntity>();
 		String sql= "SELECT  * FROM " + MyDatabase.TABLE_NOTES;
-		SQLiteDatabase db = helper.getWritableDatabase();
+		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor cursor = db.rawQuery(sql, null);
 		if(cursor.moveToFirst())
 		{
@@ -94,10 +94,13 @@ public class CRUDOperations {
 		values.put(MyDatabase.KEY_DESC, noteEntity.getDescription());
 		values.put(MyDatabase.KEY_PATH, noteEntity.getPath());
 
-		return db.update(MyDatabase.TABLE_NOTES,
+		int row =db.update(MyDatabase.TABLE_NOTES,
 				values,
 				MyDatabase.KEY_ID+"=?",
 				new String[]{String.valueOf(noteEntity.getId())});
+		db.close();
+
+		return row;
 	}
 	//--------------------------------------------
 	
