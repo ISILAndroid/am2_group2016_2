@@ -96,7 +96,7 @@
     }
 ```
 
- 3.1 Cuando necesitemos agregar un nuevo registro :
+  3.1 Cuando necesitemos agregar un nuevo registro :
   ```
     public void addNote(NoteEntity noteEntity)
     {
@@ -111,7 +111,7 @@
     }
   ```
 
- 3.2 Cuando sea requerido que nos devuelva un objeto NoteEntity por el id
+  3.2 Cuando sea requerido que nos devuelva un objeto NoteEntity por el id
  
  ```
     public NoteEntity getNote(int id)
@@ -137,8 +137,7 @@
   }
  ```
  
- 
- 3.3 Cuando se necesite todos los registro de la tabla tb_note, tener en cuenta que devuelve una lista de objetos NoteEntity
+  3.3 Cuando se necesite todos los registro de la tabla tb_note, tener en cuenta que devuelve una lista de objetos NoteEntity
  ```
      public List<NoteEntity> getAllNotes()
       {
@@ -162,7 +161,8 @@
         return lst;
     }
  ```
- 3.4 La actualización de un objeto NoteEntity
+ 
+  3.4 La actualización de un objeto NoteEntity
  ```
      public int updateNote(NoteEntity noteEntity)
       {
@@ -178,8 +178,8 @@
             new String[]{String.valueOf(noteEntity.getId())});
     }
  ```
- 
- 3.5 Finalmente si necesitamos eliminar un registro
+  
+  3.5 Finalmente si necesitamos eliminar un registro
  ```
    public int deleteNote(NoteEntity noteEntity)
     {
@@ -191,7 +191,7 @@
       return row;
   }
  ```
-4. Listado de Notas
+ 4 . Listado de Notas
  
  4.1 En la clase MainActivity.java es donde vamos a listar las notas creadas por el usuario y que se guardan en nuestra base de datos local. Antes de eso y para que no aparesca vacio vamos a prepoblar con algunos registros en duro usando el método "populate()". Esto solo lo debemos  ejecutar una sola vez , sino vamos a tener multiples registro repetidos cada vez que compilemos la app.
    
