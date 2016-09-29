@@ -94,9 +94,7 @@
     }
   ```
    
-   <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Agregar2.png" height="480">
-     
-   <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Editar_Eliminar.png" height="480">
+   <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Agregar2.png" height="480"> <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Editar_Eliminar.png" height="480">
    
 
 
