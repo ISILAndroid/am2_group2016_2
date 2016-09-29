@@ -1,248 +1,97 @@
 ## Persistencia de Datos (S4-S6)
 
-  - Base de datos Sqlite
-  - Ejemplos , CRUD
+  - CRUD  Sqlite
   
 ### Aplicación MyNotes
 
-1. Lo primero es definir la entidad NoteEntity con las siguientes propiedades :
+1. Agregar un nuevo Registro a la base de datos. Para esto debemos dividir este proceso en 2 partes :
+  - La parte visual , es decir la interacción del usuario.
+  - La parte lógica , donde tendremos la operación de agregar un registro.
+  
+  Vamos a trabajar en el fragment AddNoteFragment.java
+  
   ```
-    public class NoteEntity implements Serializable {
+        name= eteName.getText().toString().trim();
+        desc= eteDesc.getText().toString().trim();
+        note= eteNote.getText().toString().trim();
+  ```
+  
+  ```
+        NoteEntity noteEntity= new NoteEntity(name,desc,null);
+        mListener.getCrudOperations().addNote(noteEntity);
+  ```
+  Despues de realizada esta acción salimos de vista
+  ```
+     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        eteName=(EditText)getView().findViewById(R.id.eteName);
+        eteDesc=(EditText)getView().findViewById(R.id.eteDesc);
+        eteNote=(EditText)getView().findViewById(R.id.eteNote);
+        btnAddNote=(Button)getView().findViewById(R.id.btnAddNote);
 
-    private int id;
-    private String name;
-    private String description;
-    private String path;
-    
+        btnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNote();
+            }
+        });
     }
-  ```
-2. Para poder gestionar y definir nuesta base de datos creamos la clase MyDatabase que extiende de SQLiteOpenHelper. En esta clase definimos el nombre de la BD, la versión y las tablas que vamos a usar, en este caso seria TABLE_NOTES="tb_notes" y la BD DATABASE_NAME="BDNote"
 
- Tambien vamos a necesitar un query para crear las tablas, por ejemplo para tb_notes
-  ```
-      String sql= "CREATE TABLE " + TABLE_NOTES + "("
-                    + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," + KEY_NAME + " TEXT,"
-            + KEY_DESC + " TEXT,"
-                    + KEY_PATH + " TEXT" + ")";
-  ```
+    private void addNote() {
+        name= eteName.getText().toString().trim();
+        desc= eteDesc.getText().toString().trim();
+        note= eteNote.getText().toString().trim();
 
- Cuando necesitemos eliminar las tablas , por ejemplo tb_notes
- 
- ```
-    String sql= "DROP TABLE IF EXISTS " + TABLE_NOTES;
- ```
- 
- Con lo que la clase MyDatabase quedaría asi :
- 
-  ```
-    package com.isil.mynotes.storage.db;
+        NoteEntity noteEntity= new NoteEntity(name,desc,null);
+        mListener.getCrudOperations().addNote(noteEntity);
 
-    import android.content.Context;
-    import android.database.sqlite.SQLiteDatabase;
-    import android.database.sqlite.SQLiteDatabase.CursorFactory;
-    import android.database.sqlite.SQLiteOpenHelper;
-
-    public class MyDatabase extends SQLiteOpenHelper {
-
-
-      public static final int DATABASE_VERSION = 1;
-
-      public static final String DATABASE_NAME = "BDNote";
-
-        public static final String TABLE_NOTES = "tb_notes";
-
-        //Columnas de la Tabla Contacts
-        public static final String KEY_ID = "id";
-        public static final String KEY_NAME = "name";
-        public static final String KEY_DESC = "desc";
-        public static final String KEY_PATH = "path";
-
-
-        public MyDatabase(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        // TODO Auto-generated constructor stub
-      }
-
-      @Override
-      public void onCreate(SQLiteDatabase db) {
-        // TODO Auto-generated method stub
-        String sql= "CREATE TABLE " + TABLE_NOTES + "("
-                    + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," + KEY_NAME + " TEXT,"
-            + KEY_DESC + " TEXT,"
-                    + KEY_PATH + " TEXT" + ")";
-        db.execSQL(sql);
-      }
-
-      @Override
-      public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
-        String sql= "DROP TABLE IF EXISTS " + TABLE_NOTES;
-        db.execSQL(sql);
-      }
+        getActivity().finish();
 
     }
   ```
   
-3. Despues de tener nuestra entidad y construir una clase para la gestión de nuestra BD, vamos a necesitar otra clase para realizar las operaciones de nuestras tablas (CRUD) . Esta clase la llamaremos CRUDOperations, la cual va realizar acciones sobre la tabla tb_notes.
+2. Elimnar un registro de la base de datos. Para esto vamos hacer uso de los Callbacks (interfaces) para desde el fragment DetailFragment.java invocar un acción a la activity para eliminar la nota actual.
 
-```
-     public class CRUDOperations {
-
-      private MyDatabase helper;
-      public CRUDOperations(SQLiteOpenHelper _helper) {
-        super();
-        // TODO Auto-generated constructor stub
-        helper =(MyDatabase)_helper;
-    }
-```
-
-  3.1 Cuando necesitemos agregar un nuevo registro :
+  DetailFragment
   ```
-    public void addNote(NoteEntity noteEntity)
-    {
-       SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
-       ContentValues values = new ContentValues();
-       values.put(MyDatabase.KEY_NAME, noteEntity.getName());
-       values.put(MyDatabase.KEY_DESC, noteEntity.getDescription());
-       values.put(MyDatabase.KEY_PATH, noteEntity.getPath());
-
-       db.insert(MyDatabase.TABLE_NOTES, null, values);
-       db.close();
-    }
+     btnDeleteNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.deleteNote(noteEntity);
+            }
+        });
   ```
-
-  3.2 Cuando sea requerido que nos devuelva un objeto NoteEntity por el id
- 
- ```
-    public NoteEntity getNote(int id)
-    {
-      SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
-      Cursor cursor = db.query(MyDatabase.TABLE_NOTES,
-          new String[]{MyDatabase.KEY_ID, MyDatabase.KEY_NAME,
-              MyDatabase.KEY_DESC, MyDatabase.KEY_PATH},
-          MyDatabase.KEY_ID + "=?",
-          new String[]{String.valueOf(id)}, null, null, null);
-      if(cursor!=null)
-      {
-        cursor.moveToFirst();
-      }
-      int nid = Integer.parseInt(cursor.getString(0));
-      String name = cursor.getString(1);
-      String desc = cursor.getString(2);
-      String path = cursor.getString(3);
-
-      NoteEntity noteEntity= new NoteEntity(
-          nid, name, desc,path);
-      return noteEntity;
-  }
- ```
- 
-  3.3 Cuando se necesite todos los registro de la tabla tb_note, tener en cuenta que devuelve una lista de objetos NoteEntity
- ```
-     public List<NoteEntity> getAllNotes()
-      {
-        List<NoteEntity> lst =new ArrayList<NoteEntity>();
-        String sql= "SELECT  * FROM " + MyDatabase.TABLE_NOTES;
-        SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        if(cursor.moveToFirst())
-        {
-          do
-          {
-            NoteEntity contact =new NoteEntity();
-            contact.setId(Integer.parseInt(cursor.getString(0)));
-            contact.setName(cursor.getString(1));
-            contact.setDescription(cursor.getString(2));
-            contact.setPath(cursor.getString(3));
-
-            lst.add(contact);
-          }while(cursor.moveToNext());
-        }
-        return lst;
-    }
- ```
- 
-  3.4 La actualización de un objeto NoteEntity
- ```
-     public int updateNote(NoteEntity noteEntity)
-      {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(MyDatabase.KEY_NAME, noteEntity.getName());
-        values.put(MyDatabase.KEY_DESC, noteEntity.getDescription());
-        values.put(MyDatabase.KEY_PATH, noteEntity.getPath());
-
-        return db.update(MyDatabase.TABLE_NOTES,
-            values,
-            MyDatabase.KEY_ID+"=?",
-            new String[]{String.valueOf(noteEntity.getId())});
-    }
- ```
+  OnNoteListener
   
-  3.5 Finalmente si necesitamos eliminar un registro
- ```
-   public int deleteNote(NoteEntity noteEntity)
-    {
-       SQLiteDatabase db = helper.getWritableDatabase(); 
-       int row= db.delete(MyDatabase.TABLE_NOTES,
-           MyDatabase.KEY_ID+"=?", 
-           new String[]{String.valueOf(noteEntity.getId())});
-       db.close();
-      return row;
-  }
- ```
- 4 . Listado de Notas
- 
- 4.1 En la clase MainActivity.java es donde vamos a listar las notas creadas por el usuario y que se guardan en nuestra base de datos local. Antes de eso y para que no aparesca vacio vamos a prepoblar con algunos registros en duro usando el método "populate()". Esto solo lo debemos  ejecutar una sola vez , sino vamos a tener multiples registro repetidos cada vez que compilemos la app.
-   
-   ```
-    private void populate() {
-
-        CRUDOperations crudOperations= new CRUDOperations(new MyDatabase(this));
-        crudOperations.addNote(new NoteEntity("Mi Nota","Esta es un nota ",null));
-        crudOperations.addNote(new NoteEntity("Segunda Nota","Esta es la segunds nota ",null));
-        crudOperations.addNote(new NoteEntity("Tercera Nota","Esta es la tercera nota ",null));
-        crudOperations.addNote(new NoteEntity("Cuarta Nota","Esta es la cuarta nota ",null));
-        crudOperations.addNote(new NoteEntity("Quinta Nota","Esta es la quinta nota ",null));
-        crudOperations.addNote(new NoteEntity("Sexta Nota","Esta es la sexta nota ",null));
-
-        Log.v(TAG, "populate " + crudOperations.getAllNotes());
-    }
-   ```
-   
-   4.2 Para poder cargar las notas guardadas de nuestra base de datos local , en el método onCreate de nuestra Activity llamamos al método "loadData()"
-   
   ```
-      public class MainActivity extends ActionBarActivity {
+    package com.isil.mynotes.view.listeners;
 
-        private static final String TAG ="MainActivity" ;
-        private static final int ACTION_ADD=1;
-        private static final int ACTION_DETAIL=2;
+    import com.isil.mynotes.model.entity.NoteEntity;
+    import com.isil.mynotes.storage.db.CRUDOperations;
 
-        private TextView tviLogout,tviUser;
-        private ListView lstNotes;
-        private Button btnAddNote;
-        private List<NoteEntity> lsNoteEntities;
-        private CRUDOperations crudOperations;
-        private NoteAdapter noteAdapter;
+    /**
+     * Created by emedinaa on 15/09/15.
+     */
+    public interface OnNoteListener {
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            //populate();
-            init();
-            //loadData();
-        }
-
-        private void loadData() {
-            crudOperations= new CRUDOperations(new MyDatabase(this));
-            lsNoteEntities= crudOperations.getAllNotes();
-            noteAdapter= new NoteAdapter(this,lsNoteEntities);
-            lstNotes.setAdapter(noteAdapter);
-
-        }
-
+         CRUDOperations getCrudOperations();
+         void deleteNote(NoteEntity noteEntity);
+    }
+  ```
+  
+  NoteActivity
+  
+  ```
+      @Override
+    public void deleteNote(NoteEntity noteEntity) {
+        MyDialogFragment myDialogFragment =new MyDialogFragment();
+        Bundle bundle= new Bundle();
+        bundle.putString("TITLE","¿Deseas eliminar esta nota?");
+        bundle.putInt("TYPE",100);
+        myDialogFragment.setArguments(bundle);
+        myDialogFragment.show(getFragmentManager(), "dialog");
+    }
   ```
   
    <img src="https://github.com/ISILAndroid/am2_group2016_1/blob/Lesson4/screenshots/Listado%20de%20Notas.png" height="480">
