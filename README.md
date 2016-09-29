@@ -3,7 +3,7 @@
 Persistencia de Datos (S4-S6)
 
 - Base de datos Sqlite : 
-     * Ejemplos , CRUD Listar Notas [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/SQLite.md)
+     * CRUD Listar Notas [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/SQLite.md)
      * CRUD , Agregar y eliminar Notas [link](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/CRUDSQLite.md)
      
 - ORM, uso de ORMLite
