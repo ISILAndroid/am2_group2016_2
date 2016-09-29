@@ -132,14 +132,4 @@ public class MainActivity extends ActionBarActivity {
         loadData();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
 }
