@@ -93,8 +93,10 @@
         myDialogFragment.show(getFragmentManager(), "dialog");
     }
   ```
-  
-   <img src="https://github.com/ISILAndroid/am2_group2016_1/blob/Lesson4/screenshots/Listado%20de%20Notas.png" height="480">
+   
+   <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Agregar2.png" height="480">
+     
+   <img src="https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson5/Editar_Eliminar.png" height="480">
    
 
 
