@@ -191,9 +191,9 @@
       return row;
   }
  ```
-  
  4. Listado de Notas
-   4.1 En la clase MainActivity.java es donde vamos a listar las notas creadas por el usuario y que se guardan en nuestra base de datos local. Antes de eso y para que no aparesca vacio vamos a prepoblar con algunos registros en duro usando el método "populate()". Esto solo lo debemos  ejecutar una sola vez , sino vamos a tener multiples registro repetidos cada vez que compilemos la app.
+ 
+ 4.1 En la clase MainActivity.java es donde vamos a listar las notas creadas por el usuario y que se guardan en nuestra base de datos local. Antes de eso y para que no aparesca vacio vamos a prepoblar con algunos registros en duro usando el método "populate()". Esto solo lo debemos  ejecutar una sola vez , sino vamos a tener multiples registro repetidos cada vez que compilemos la app.
    
    ```
     private void populate() {
@@ -245,36 +245,8 @@
 
   ```
   
-   
- 
    <img src="https://github.com/ISILAndroid/am2_group2016_1/blob/Lesson4/screenshots/Listado%20de%20Notas.png" height="480">
    
- ```
- private void populate() {
-
-        CRUDOperations crudOperations= new CRUDOperations(new MyDatabase(this));
-        crudOperations.addNote(new NoteEntity("Mi Nota","Esta es un nota ",null));
-        crudOperations.addNote(new NoteEntity("Segunda Nota","Esta es la segunds nota ",null));
-        crudOperations.addNote(new NoteEntity("Tercera Nota","Esta es la tercera nota ",null));
-        crudOperations.addNote(new NoteEntity("Cuarta Nota","Esta es la cuarta nota ",null));
-        crudOperations.addNote(new NoteEntity("Quinta Nota","Esta es la quinta nota ",null));
-        crudOperations.addNote(new NoteEntity("Sexta Nota","Esta es la sexta nota ",null));
-
-        Log.v(TAG, "populate " + crudOperations.getAllNotes());
-    }
- ```
- 
- ```
-   private void loadData() {
-        crudOperations= new CRUDOperations(new MyDatabase(this));
-        lsNoteEntities= crudOperations.getAllNotes();
-        noteAdapter= new NoteAdapter(this,lsNoteEntities);
-        lstNotes.setAdapter(noteAdapter);
-
-    }
- ```
-
- 
 
 
   
