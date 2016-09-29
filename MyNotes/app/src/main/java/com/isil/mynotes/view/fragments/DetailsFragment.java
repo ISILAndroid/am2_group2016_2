@@ -90,7 +90,6 @@ public class DetailsFragment extends Fragment {
         if(noteEntity!=null)
         {
             //TODO mostrar INFO
-
             String name= noteEntity.getName().toString();
             String desc= noteEntity.getDescription().toString();
 
@@ -102,6 +101,18 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mListener.deleteNote(noteEntity);
+            }
+        });
+        btnEditNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String name=   ((EditText)getView().findViewById(R.id.eteName)).getText().toString();
+                String desc= ((EditText)getView().findViewById(R.id.eteDesc)).getText().toString();
+                int id = noteEntity.getId();
+                NoteEntity editNoteEntity= new NoteEntity(id,name,desc,null);
+
+                mListener.editNote(editNoteEntity);
             }
         });
     }

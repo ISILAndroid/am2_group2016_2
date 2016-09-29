@@ -112,6 +112,12 @@ public class NoteActivity extends ActionBarActivity  implements OnNoteListener, 
     }
 
     @Override
+    public void editNote(NoteEntity noteEntity) {
+        crudOperations.updateNote(noteEntity);
+        finish();
+    }
+
+    @Override
     public void onPositiveListener(Object object, int type) {
         Log.v(TAG, "dialog positive");
         if(currentNote!=null) {
