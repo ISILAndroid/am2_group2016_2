@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.isil.mynotes.R;
 import com.isil.mynotes.model.entity.NoteEntity;
@@ -89,6 +90,12 @@ public class DetailsFragment extends Fragment {
         if(noteEntity!=null)
         {
             //TODO mostrar INFO
+
+            String name= noteEntity.getName().toString();
+            String desc= noteEntity.getDescription().toString();
+
+            ((EditText)getView().findViewById(R.id.eteName)).setText(name);
+            ((EditText)getView().findViewById(R.id.eteDesc)).setText(desc);
         }
 
         btnDeleteNote.setOnClickListener(new View.OnClickListener() {

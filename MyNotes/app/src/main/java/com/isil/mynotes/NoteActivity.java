@@ -28,6 +28,8 @@ public class NoteActivity extends ActionBarActivity  implements OnNoteListener, 
     private DetailsFragment detailsFragment= DetailsFragment.newInstance(null,null);
     private int fragmentSelected= DETAIL_NOTE;
     private NoteEntity noteEntity;
+    private NoteEntity currentNote;
+
 
     private CRUDOperations crudOperations;
 
@@ -99,6 +101,8 @@ public class NoteActivity extends ActionBarActivity  implements OnNoteListener, 
 
     @Override
     public void deleteNote(NoteEntity noteEntity) {
+
+        currentNote= noteEntity;
         MyDialogFragment myDialogFragment =new MyDialogFragment();
         Bundle bundle= new Bundle();
         bundle.putString("TITLE","¿Deseas eliminar esta nota?");
@@ -110,6 +114,10 @@ public class NoteActivity extends ActionBarActivity  implements OnNoteListener, 
     @Override
     public void onPositiveListener(Object object, int type) {
         Log.v(TAG, "dialog positive");
+        if(currentNote!=null) {
+            crudOperations.deleteNote(currentNote);
+            finish();
+        }
     }
 
     @Override
