@@ -191,7 +191,7 @@
       return row;
   }
  ```
- 4. Listado de Notas
+4. Listado de Notas
  
  4.1 En la clase MainActivity.java es donde vamos a listar las notas creadas por el usuario y que se guardan en nuestra base de datos local. Antes de eso y para que no aparesca vacio vamos a prepoblar con algunos registros en duro usando el método "populate()". Esto solo lo debemos  ejecutar una sola vez , sino vamos a tener multiples registro repetidos cada vez que compilemos la app.
    
