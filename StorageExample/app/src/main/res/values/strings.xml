@@ -20,4 +20,7 @@
      ó \u00F3
      ú \u00FA
     -->
+
+    <string name="closeDrawer">Navigation View</string>
+    <string name="openDrawer">Navigation View Closed</string>
 </resources>

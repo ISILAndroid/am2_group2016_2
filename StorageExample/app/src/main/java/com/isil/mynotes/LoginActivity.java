@@ -59,7 +59,7 @@ public class LoginActivity extends ActionBarActivity {
     private void gotoMain() {
 
         savePreferences();
-        Intent intent= new Intent(this,MainActivity.class);
+        Intent intent= new Intent(this,DashboardActivity.class);
         startActivity(intent);
     }
 
