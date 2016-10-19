@@ -14,6 +14,8 @@ import android.view.View;
 
 import com.isil.mynotes.storage.PreferencesHelper;
 import com.isil.mynotes.view.fragments.CourseFragment;
+import com.isil.mynotes.view.fragments.FacultyFragment;
+import com.isil.mynotes.view.fragments.NoteFragment;
 import com.isil.mynotes.view.fragments.ProfileFragment;
 import com.isil.mynotes.view.listeners.OnNavListener;
 
@@ -55,21 +57,23 @@ public class DashboardActivity extends AppCompatActivity implements OnNavListene
 
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
-                    case R.id.menuAndroid:
+                    case R.id.menuProfile:
                         changeFragment(0);
                         return true;
 
                     // For rest of the options we just show a toast on click
 
-                    case R.id.menuAndroidBug:
+                    case R.id.menuNotes:
                         //Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
                         changeFragment(1);
                         return true;
-                    case R.id.menuAndroidHelp:
+                    case R.id.menuFaculties:
                         //Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
                         changeFragment(2);
                         return true;
-
+                    case R.id.menuLogout:
+                        changeFragment(3);
+                        return true;
                     default:
                         return true;
 
@@ -108,14 +112,17 @@ public class DashboardActivity extends AppCompatActivity implements OnNavListene
         Fragment fragment = null;
         switch (i) {
             case 0:
-                fragment = new CourseFragment();
-                break;
-            case 1:
                 fragment = new ProfileFragment();
                 break;
+            case 1:
+                fragment = new NoteFragment();
+                break;
             case 2:
+                fragment = new FacultyFragment();
+                break;
+            case 3:
                 logout();
-                return;
+                break;
         }
         if (fragment != null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

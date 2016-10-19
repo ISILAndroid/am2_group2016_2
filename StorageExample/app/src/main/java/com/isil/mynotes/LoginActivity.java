@@ -3,13 +3,20 @@ package com.isil.mynotes;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.isil.mynotes.storage.PreferencesHelper;
+import com.isil.mynotes.storage.db.MyDatabase;
+import com.isil.mynotes.storage.db.UserOperations;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -19,13 +26,14 @@ public class LoginActivity extends ActionBarActivity {
     private EditText etePassword;
     private String username;
     private String password;
+    private UserOperations userOperations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        userOperations= new UserOperations(new MyDatabase(this));
         init();
     }
 
@@ -39,7 +47,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (validateForm()) {
-                    gotoMain();
+                    logIn();
                 }
             }
         });
@@ -49,6 +57,29 @@ public class LoginActivity extends ActionBarActivity {
                 gotoUserRegister();
             }
         });
+
+
+        etePassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    if (validateForm()) {
+                        logIn();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void logIn() {
+        boolean authentication= userOperations.logIn(username,password);
+        if(authentication){
+            gotoMain();
+        }else {
+            Toast.makeText(this,"Email o password invàlido",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void gotoUserRegister() {

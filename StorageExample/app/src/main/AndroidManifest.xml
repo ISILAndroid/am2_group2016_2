@@ -35,7 +35,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".DashboardActivity"
-            android:theme="@style/NavAppTheme" ></activity>
+            android:theme="@style/NavAppTheme"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

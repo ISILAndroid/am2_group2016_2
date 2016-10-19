@@ -4,19 +4,25 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/menuAndroid"
-            android:checked="false"
-            android:icon="@mipmap/ic_android"
-            android:title="Cursos" />
-
-        <item
-            android:id="@+id/menuAndroidBug"
+            android:id="@+id/menuProfile"
             android:checked="false"
             android:icon="@mipmap/ic_android"
             android:title="Perfil" />
 
         <item
-            android:id="@+id/menuAndroidHelp"
+            android:id="@+id/menuNotes"
+            android:checked="false"
+            android:icon="@mipmap/ic_android"
+            android:title="Notas" />
+
+        <item
+            android:id="@+id/menuFaculties"
+            android:checked="false"
+            android:icon="@mipmap/ic_android"
+            android:title="Facultades" />
+
+        <item
+            android:id="@+id/menuLogout"
             android:checked="false"
             android:icon="@mipmap/ic_android"
             android:title="Cerrar sesión" />
