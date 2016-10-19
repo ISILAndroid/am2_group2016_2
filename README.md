@@ -1,6 +1,6 @@
-# am2_group2016_2 Lesson 6
+# am2_group2016_2 Examen Parcial
 
-Persistencia de Datos (S4-S6)
+Soluciòn del examen parcial
 
 References 
 
