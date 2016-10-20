@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.isil.mynotes.model.entity.FacultyEntity;
+import com.isil.mynotes.model.entity.GradeEntity;
 import com.isil.mynotes.model.entity.UserEntity;
 import com.isil.mynotes.storage.PreferencesHelper;
 import com.isil.mynotes.storage.db.FacultyOperations;
+import com.isil.mynotes.storage.db.GradeOperations;
 import com.isil.mynotes.storage.db.MyDatabase;
 import com.isil.mynotes.storage.db.UserOperations;
 
@@ -25,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG ="SplashActivity" ;
     private UserOperations userOperations;
     private FacultyOperations facultyOperations;
+    private GradeOperations gradeOperations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +60,11 @@ public class SplashActivity extends AppCompatActivity {
 
         userOperations= new UserOperations(new MyDatabase(this));
         facultyOperations= new FacultyOperations(new MyDatabase(this));
+        gradeOperations= new GradeOperations(new MyDatabase(this));
 
         int users= userOperations.getUserCount();
         int faculties= facultyOperations.getFacultyCount();
+        int grades= gradeOperations.getGradeCount();
 
         Log.v(TAG, String.format("DBParcial users %s + faculties %S ",users,faculties));
         if(users<=0) {
@@ -82,6 +87,22 @@ public class SplashActivity extends AppCompatActivity {
             facultyOperations.addFaculty(facultyEntity3);
             facultyOperations.addFaculty(facultyEntity4);
             facultyOperations.addFaculty(facultyEntity5);
+        }
+
+        if (grades<=0){
+            GradeEntity gradeEntity= new GradeEntity("Matemática",15,1,null);
+            GradeEntity gradeEntity1= new GradeEntity("Física",16,1,null);
+            GradeEntity gradeEntity2= new GradeEntity("Algoritmos",11,1,null);
+            GradeEntity gradeEntity3= new GradeEntity("Base Datos I",17,1,null);
+            GradeEntity gradeEntity4= new GradeEntity("Base Datos II",14,1,null);
+            GradeEntity gradeEntity5= new GradeEntity("Matemática",13,1,null);
+
+            gradeOperations.addGrade(gradeEntity);
+            gradeOperations.addGrade(gradeEntity1);
+            gradeOperations.addGrade(gradeEntity2);
+            gradeOperations.addGrade(gradeEntity3);
+            gradeOperations.addGrade(gradeEntity4);
+            gradeOperations.addGrade(gradeEntity5);
         }
 
 

@@ -15,6 +15,7 @@ import android.view.View;
 import com.isil.mynotes.storage.PreferencesHelper;
 import com.isil.mynotes.view.fragments.CourseFragment;
 import com.isil.mynotes.view.fragments.FacultyFragment;
+import com.isil.mynotes.view.fragments.GradeFragment;
 import com.isil.mynotes.view.fragments.NoteFragment;
 import com.isil.mynotes.view.fragments.ProfileFragment;
 import com.isil.mynotes.view.listeners.OnNavListener;
@@ -115,7 +116,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNavListene
                 fragment = new ProfileFragment();
                 break;
             case 1:
-                fragment = new NoteFragment();
+                fragment = new GradeFragment();
                 break;
             case 2:
                 fragment = new FacultyFragment();
