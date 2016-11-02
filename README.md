@@ -384,9 +384,77 @@ NoteRepository
 	}
 
 ```
+ - Add Note
+```
+   private void addNoteORM() {
+        name= eteName.getText().toString().trim();
+        desc= eteDesc.getText().toString().trim();
+        note= eteNote.getText().toString().trim();
 
+        NoteORMEntity noteEntity= new NoteORMEntity(name,desc,null);
+        mListener.getNoteORMOperations().create(noteEntity);
 
+        getActivity().finish();
 
+    }
+```
+ - Update Note 
+ 
+ ```
+    //DetailsFragment
+    btnEditNote.setOnClickListener(new View.OnClickListener() {
+	    @Override
+	    public void onClick(View v) {
+
+		String name=   ((EditText)getView().findViewById(R.id.eteName)).getText().toString();
+		String desc= ((EditText)getView().findViewById(R.id.eteDesc)).getText().toString();
+		int id = noteORMEntity.getId();
+		NoteORMEntity editNoteEntity= new NoteORMEntity(id,name,desc,null);
+
+		mListener.editNoteORM(editNoteEntity);
+	    }
+	});
+	
+    //NoteActivity
+    @Override
+    public void editNoteORM(NoteORMEntity noteEntity) {
+        noteRepository.update(noteEntity);
+        finish();
+    }
+ 	
+ ```
+ - Delete Note
+ 
+```
+       //DetailsFragment
+       btnDeleteNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.deleteNoteORM(noteORMEntity);
+            }
+        });
+	
+    //NoteActivity
+    @Override
+    public void deleteNoteORM(NoteORMEntity noteEntity) {
+        currentNoteORM= noteEntity;
+        MyDialogFragment myDialogFragment =new MyDialogFragment();
+        Bundle bundle= new Bundle();
+        bundle.putString("TITLE","¿Deseas eliminar esta nota?");
+        bundle.putInt("TYPE",100);
+        myDialogFragment.setArguments(bundle);
+        myDialogFragment.show(getFragmentManager(), "dialog");
+    }
+    
+    @Override
+    public void onPositiveListener(Object object, int type) {
+        Log.v(TAG, "dialog positive");
+        if(currentNoteORM!=null) {
+            noteRepository.delete(currentNoteORM);
+            finish();
+        }
+    }
+```
 
 References 
 
