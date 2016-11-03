@@ -3,6 +3,7 @@ package com.isil.mynotesorm.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,14 @@ import com.isil.mynotesorm.entity.NoteEntity;
 import com.isil.mynotesorm.entity.NoteORMEntity;
 import com.isil.mynotesorm.view.listeners.OnNoteListener;
 
+import java.util.Date;
+
 public class AddNoteFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG ="AddNoteFragment" ;
 
     private EditText eteName;
     private EditText eteDesc;
@@ -105,9 +109,12 @@ public class AddNoteFragment extends Fragment {
         name= eteName.getText().toString().trim();
         desc= eteDesc.getText().toString().trim();
         note= eteNote.getText().toString().trim();
+        String date = new Date().toString();
 
         NoteORMEntity noteEntity= new NoteORMEntity(name,desc,null);
+        noteEntity.setAddedDate(date);
         mListener.getNoteORMOperations().create(noteEntity);
+        Log.v(TAG, "date "+date);
 
         getActivity().finish();
 

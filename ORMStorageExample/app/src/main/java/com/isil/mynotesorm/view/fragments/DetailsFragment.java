@@ -13,6 +13,8 @@ import com.isil.mynotesorm.R;
 import com.isil.mynotesorm.entity.NoteORMEntity;
 import com.isil.mynotesorm.view.listeners.OnNoteListener;
 
+import java.util.Date;
+
 public class DetailsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

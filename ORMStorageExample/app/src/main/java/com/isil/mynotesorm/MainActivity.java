@@ -41,15 +41,13 @@ public class MainActivity extends ActionBarActivity {
         //loadDataORM();
     }
 
-
     private void loadDataORM() {
         noteRepository= new NoteRepository(this);
-        lsNoteORMEntities= noteRepository.getRecentAll();
+        lsNoteORMEntities= noteRepository.getAAll();
         noteORMAdapter= new NoteORMAdapter(this,lsNoteORMEntities);
         lstNotes.setAdapter(noteORMAdapter);
 
         Log.v(TAG, "lsNoteEntities "+lsNoteORMEntities);
-
     }
 
 

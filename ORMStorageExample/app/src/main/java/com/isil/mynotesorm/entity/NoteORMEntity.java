@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class NoteORMEntity implements Serializable {
 
     public static  final String TIMESTAMP_FIELD="addedDate";
+    public static  final String NAME_FIELD="name";
 
     //@DatabaseField(id = true)
     @DatabaseField(generatedId=true)

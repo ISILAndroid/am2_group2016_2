@@ -94,6 +94,20 @@ public class NoteRepository {
         }
     }
 
+    public List<NoteORMEntity> getAAll() {
+
+        QueryBuilder<NoteORMEntity, Integer> qb = noteDao.queryBuilder();
+        try {
+            //qb.orderBy(NoteORMEntity.NAME_FIELD, true);
+            qb.orderByRaw("name COLLATE NOCASE").query();
+            PreparedQuery<NoteORMEntity> preparedQuery = qb.prepare();
+            return noteDao.query(preparedQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public long getNumberOfNotes() {
         QueryBuilder<NoteORMEntity, Integer> qb = noteDao.queryBuilder();
