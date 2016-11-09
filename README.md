@@ -1,464 +1,528 @@
-# am2_group2016_2 Lesson 7
+# am2_group2016_1
+Curso de Aplicaciones Móviles II - Grupo 2016-I
 
-Persistencia de Datos (S4-S6)
+# Conexión Remota
+En este sesión veremos como conectar nuestra aplicación Android con un Base de Datos que esta en la nube mediante servicios RESTFul, para lo cual usaremos backendless.
 
-- How to implement ORMLite Library
+1. Crear un proyecto en backendless y agregar la tabla Note con los siguientes campos name (String) y description (String). Tambien usaremos la tabla User que viene por defecto  .
 
-Steps
+2. Usaremos el proyecto de Notas para la integración
 
-- Added ormlite dependency
+2.1 Para poder acceder a la nube necesitamos el permiso de INTERNET, esto en el AndroidManifest de nuetsro proyecto
+```
+    <uses-permission android:name="android.permission.INTERNET" />
+```
+  2.2 Luego importar las librería para realizar la conexión, Retrofit , OkHttp y el conversor GSON . Esto en el gradle de nuestra APP
+```
+    //RETROFIT https://github.com/square/retrofit
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+    //GSON https://github.com/google/gson
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    //OKHTTP
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+```
+3 . LogIn 
+ 3.1 Revisamos la documentación de la API Rest https://backendless.com/products/documentation/
+ 3.2 LogIn: https://backendless.com/documentation/users/rest/users_login.htm
+```
+ method : POST
+ url : /<version name>/users/login
+ raw : 
+ {
+  "login" : value,
+  "password" : value,
+ }
+```
+3.3 Vamos a necesitar 3 entidades para poder trabajar el usuario, el logIn y la respuesta del servidor 
+    UserEntity
+```
+public class UserEntity implements Serializable {
+    private String email;
+    private String name;
+    private String objectId;
+    private String token;
+}
+```
+
+3.4 LogInRaw ( Esta entidad es lo que se va enviar al servidor con el email y password)
 
 ```
-	dependencies {
-	    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-
-	    compile 'com.android.support:appcompat-v7:23.4.0'
-	    compile 'com.android.support:support-v4:23.4.0'
-	    compile 'com.android.support:design:23.4.0'
-	    compile 'com.android.support:cardview-v7:23.4.0'
-	    compile 'com.android.support:recyclerview-v7:23.4.0'
-	    compile 'com.j256.ormlite:ormlite-android:4.48'
-	}
-
-```
-
-- Update NoteEntity to NoteORMEntity
-
-```
-	package com.isil.mynotes.model.entity;
-
-	import com.j256.ormlite.field.DatabaseField;
-	import com.j256.ormlite.table.DatabaseTable;
-
-	import java.io.Serializable;
-
-	/**
-	 * Created by eduardomedina on 2/11/16.
-	 */
-
-	@DatabaseTable(tableName = "note.tb")
-	public class NoteORMEntity implements Serializable {
-
-
-	    //@DatabaseField(id = true)
-	    @DatabaseField(generatedId=true)
-	    private int id;
-
-	    @DatabaseField()
-	    private String name;
-
-	    @DatabaseField()
-	    private String description;
-
-	    @DatabaseField()
-	    private String path;
-
-	    @DatabaseField()
-	    private String addedDate;
-
-	    @DatabaseField()
-	    private String color;
-
-	    public NoteORMEntity() {
-	    }
-
-	    public NoteORMEntity(int id, String name, String description, String path) {
-	        this.id = id;
-	        this.name = name;
-	        this.description = description;
-	        this.path = path;
-	    }
-
-	    public NoteORMEntity(String name, String description, String path) {
-	        this.name = name;
-	        this.description = description;
-	        this.path = path;
-	    }
-
-	    /*public NoteEntity(String name, String description, String path,String addedDate) {
-	        this.name = name;
-	        this.description = description;
-	        this.path = path;
-	        this.addedDate= addedDate;
-	    }*/
-
-	    public NoteORMEntity(String name, String description, String color,String addedDate) {
-	        this.name = name;
-	        this.description = description;
-	        this.color = color;
-	        this.addedDate= addedDate;
-	    }
-
-	    public int getId() {
-	        return id;
-	    }
-
-	    public void setId(int id) {
-	        this.id = id;
-	    }
-
-	    public String getName() {
-	        return name;
-	    }
-
-	    public void setName(String name) {
-	        this.name = name;
-	    }
-
-	    public String getDescription() {
-	        return description;
-	    }
-
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
-
-	    public String getPath() {
-	        return path;
-	    }
-
-	    public void setPath(String path) {
-	        this.path = path;
-	    }
-
-	    public String getAddedDate() {
-	        return addedDate;
-	    }
-
-	    public void setAddedDate(String addedDate) {
-	        this.addedDate = addedDate;
-	    }
-
-	    public String getColor() {
-	        return color;
-	    }
-
-	    public void setColor(String color) {
-	        this.color = color;
-	    }
-
-	}
+public class LogInRaw {
+    private String login;
+    private String password;
+}
 
 ```
 
-- Added other class 
-
-DataBaseManager	
+3.5 LogInResponse ( Esto es para la respuesta del servidor al hacer LogIn)
 
 ```
-	package com.isil.mynotesorm.storage.dborm;
+public class LogInResponse {
 
-	import android.content.Context;
+    private String message;
 
-	import com.j256.ormlite.android.apptools.OpenHelperManager;
+    private String name;
 
-	/**
-	 * Created by Jay Rambhia on 05/04/15.
-	 */
-	public class DatabaseManager {
-	    private DatabaseHelper databaseHelper = null;
+    @SerializedName("___class")
+    private String type;
 
-	    public DatabaseHelper getHelper(Context context) {
-	        if (databaseHelper == null) {
-	            databaseHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
-	        }
+    @SerializedName("user-token")
+    private String token;
 
-	        return databaseHelper;
-	    }
+    private String email;
 
-	    public void releaseHelper() {
-	        if (databaseHelper != null) {
-	            OpenHelperManager.releaseHelper();
-	            databaseHelper = null;
-	        }
-	    }
-	}
+    private String objectId;
+}
 ```
+3.6 Creamos una clase llamada ApiClient donde vamos a declarar todas las llamadas al servidor. Recordar que deben usar las credenciales de la BD que crearon en BackendLess "Identificador de Aplicación" y "Clave secreta REST"
 
-DatabaseHelper
+ ```
+ public class ApiClient {
 
-```
-	package com.isil.mynotesorm.storage.dborm;
+    private static final String TAG = "ApiClient";
+    private static final String PATH="http://api.backendless.com";
 
-	import android.content.Context;
-	import android.database.sqlite.SQLiteDatabase;
-	import android.util.Log;
+    private static ServicesApiInterface servicesApiInterface;
 
-	import com.isil.mynotesorm.entity.NoteORMEntity;
-	import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-	import com.j256.ormlite.dao.Dao;
-	import com.j256.ormlite.dao.RuntimeExceptionDao;
-	import com.j256.ormlite.support.ConnectionSource;
-	import com.j256.ormlite.table.TableUtils;
+    public static ServicesApiInterface getMyApiClient() {
 
-	import java.sql.SQLException;
+        if (servicesApiInterface == null) {
 
-	/**
-	 * Created by Jay Rambhia on 05/04/15.
-	 */
-	public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+            RestAdapter restAdapter = new RestAdapter.Builder()
+                    .setEndpoint(PATH)
+                    .setClient(new OkClient(getClient()))
+                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .build();
 
-	    private static final String DATABASE_NAME = "MyNotes.db";
-	    private static final int DATABASE_VERSION = 1;
-
-	    private Dao<NoteORMEntity, Integer> noteDao = null;
-	    private RuntimeExceptionDao<NoteORMEntity, Integer> noteRuntimeDao = null;
-
-	    public DatabaseHelper(Context context) {
-	        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	    }
-
-	    @Override
-	    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
-	        try {
-	            TableUtils.createTable(connectionSource, NoteORMEntity.class);
-	        } catch (SQLException e) {
-	            Log.e(DatabaseHelper.class.getName(), "can't create database", e);
-	            throw new RuntimeException(e);
-	        }
-	    }
-
-	    @Override
-	    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-	        try {
-	            TableUtils.dropTable(connectionSource, NoteORMEntity.class, true);
-	            onCreate(database, connectionSource);
-	        } catch (SQLException e) {
-	            Log.e(DatabaseHelper.class.getName(), "Can't drop database", e);
-	            throw new RuntimeException(e);
-	        }
-	    }
-
-	    @Override
-	    public void close() {
-	        super.close();
-	        noteDao = null;
-	    }
-
-	    public RuntimeExceptionDao<NoteORMEntity, Integer> getNoteDataDao() {
-	        if (noteRuntimeDao == null) {
-	            noteRuntimeDao = getRuntimeExceptionDao(NoteORMEntity.class);
-	        }
-
-	        return noteRuntimeDao;
-	    }
-
-	    public Dao<NoteORMEntity, Integer> getNoteDao() throws SQLException {
-	        if (noteDao == null) {
-	            noteDao = getDao(NoteORMEntity.class);
-	        }
-
-	        return noteDao;
-	    }
-
-	}
-
-```
-
-NoteRepository
-
-```
-	package com.isil.mynotesorm.storage.dborm;
-
-	import android.content.Context;
-	import android.util.Log;
-
-	import com.isil.mynotesorm.entity.NoteORMEntity;
-	import com.j256.ormlite.dao.Dao;
-	import com.j256.ormlite.stmt.PreparedQuery;
-	import com.j256.ormlite.stmt.QueryBuilder;
-
-	import java.sql.SQLException;
-	import java.util.List;
-
-	/**
-	 * Created by Jay Rambhia on 05/04/15.
-	 */
-	public class NoteRepository {
-
-	    private static final String TAG = "NoteRepository";
-	    private DatabaseHelper dbHelper;
-	    private Dao<NoteORMEntity, Integer> noteDao;
-
-	    public NoteRepository(Context context) {
-	        DatabaseManager dbManager = new DatabaseManager();
-	        dbHelper = dbManager.getHelper(context);
-	        try {
-	            noteDao = dbHelper.getNoteDao();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-
-	    public int create(NoteORMEntity note) {
-	        try {
-	            return noteDao.create(note);
-	//            dbHelper.getDatab
-	        } catch (SQLException e) {
-	//            e.printStackTrace();
-	        }
-	        return 0;
-	    }
-
-	    public int update(NoteORMEntity note) {
-	        try {
-	            return noteDao.update(note);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            Log.v(TAG, "update exception " + e);
-	        }
-
-	        return 0;
-	    }
-
-	    public int delete(NoteORMEntity note) {
-	        try {
-	            return noteDao.delete(note);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        return 0;
-	    }
-
-	    public NoteORMEntity getById(int id) {
-	        try {
-	            return noteDao.queryForId(id);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        return null;
-	    }
-
-	    public List<NoteORMEntity> findAll() {
-	        try {
-	            return noteDao.queryForAll();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        return null;
-	    }
-
-	    public List<NoteORMEntity> getRecentAll() {
-
-	        QueryBuilder<NoteORMEntity, Integer> qb = noteDao.queryBuilder();
-	        try {
-	            qb.orderBy(NoteORMEntity.TIMESTAMP_FIELD, false);
-	            PreparedQuery<NoteORMEntity> preparedQuery = qb.prepare();
-	            return noteDao.query(preparedQuery);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
-
-
-	    public long getNumberOfNotes() {
-	        QueryBuilder<NoteORMEntity, Integer> qb = noteDao.queryBuilder();
-	        try {
-	            return qb.countOf();
-	        } catch (SQLException e) {
-	            return -1;
-	        }
-	    }
-
-	    public List<NoteORMEntity> getRecentNotes(long limit) {
-	        if (limit < 1) {
-	            limit = 10;
-	        }
-
-	        QueryBuilder<NoteORMEntity, Integer> qb = noteDao.queryBuilder();
-	        try {
-	            qb.orderBy(NoteORMEntity.TIMESTAMP_FIELD, false);
-	            qb.limit(limit);
-	            PreparedQuery<NoteORMEntity> preparedQuery = qb.prepare();
-	            return noteDao.query(preparedQuery);
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
-	}
-
-```
- - Add Note
-```
-   private void addNoteORM() {
-        name= eteName.getText().toString().trim();
-        desc= eteDesc.getText().toString().trim();
-        note= eteNote.getText().toString().trim();
-
-        NoteORMEntity noteEntity= new NoteORMEntity(name,desc,null);
-        mListener.getNoteORMOperations().create(noteEntity);
-
-        getActivity().finish();
-
+            servicesApiInterface = restAdapter.create(ServicesApiInterface.class);
+        }
+        return servicesApiInterface;
     }
-```
- - Update Note 
+
+    public interface ServicesApiInterface {
+
+        ///<version name>/users/login
+        //@Headers({"Content-Type: application/json"})
+
+
+        @Headers({
+                "Content-Type: application/json",
+                "application-id: xxxxxxx",
+                "secret-key: xxxxxx",
+                "application-type: REST"
+        })
+        //v1/users/login
+        @POST("/v1/users/login")
+        void login(@Body LogInRaw raw, Callback<LogInResponse> callback);
+
+
+        @Headers({
+                "Content-Type: application/json",
+                "application-id: xxxxxx",
+                "secret-key: xxxxx",
+                "application-type: REST"
+        })
+        //v1/data/Notes
+        @GET("/v1/data/Notes")
+        void notes( Callback<NotesResponse> callback);
+
+
+        @Headers({
+                "Content-Type: application/json",
+                "application-id: xxxxx",
+                "secret-key: xxxxxx",
+                "application-type: REST"
+        })
+        @POST("/v1/data/Notes")
+        void addNote(@Body NoteRaw raw, Callback<NoteResponse> callback);
+    }
+
+    private static OkHttpClient getClient() {
+        OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(2, TimeUnit.MINUTES);
+        client.setReadTimeout(2, TimeUnit.MINUTES);
+        return client;
+    }
+}
+ ```
+3.7  Vamos a considerar la actividad del LogIn como un vista sin lógica, solo con métodos para ser llamados por otra clase que se encargue de administrar estas acciones. Esta clase la vamos a llamar LogInPresenter y nuestra activity va implementar una insterfaz llamada LogInView 
+ ```
+ public interface LogInView {
+
+    void showLoading();
+    void hideLoading();
+    Context getContext();
+
+    void onMessageError(String message);
+    void gotoMain();
+}
+
+ ```
  
  ```
-    //DetailsFragment
-    btnEditNote.setOnClickListener(new View.OnClickListener() {
-	    @Override
-	    public void onClick(View v) {
+ public class LogInPresenter {
 
-		String name=   ((EditText)getView().findViewById(R.id.eteName)).getText().toString();
-		String desc= ((EditText)getView().findViewById(R.id.eteDesc)).getText().toString();
-		int id = noteORMEntity.getId();
-		NoteORMEntity editNoteEntity= new NoteORMEntity(id,name,desc,null);
+    private static final String TAG = "LogInPresenter";
+    private LogInView logInView;
+    private String email;
+    private String password;
 
-		mListener.editNoteORM(editNoteEntity);
-	    }
-	});
-	
-    //NoteActivity
-    @Override
-    public void editNoteORM(NoteORMEntity noteEntity) {
-        noteRepository.update(noteEntity);
-        finish();
+    public   void attachedView(LogInView logInView){
+        this.logInView = logInView;
     }
- 	
- ```
- - Delete Note
- 
-```
-       //DetailsFragment
-       btnDeleteNote.setOnClickListener(new View.OnClickListener() {
+
+    public  void detachView(){
+        this.logInView=null;
+    }
+
+    public void logIn(String email,String password) {
+        this.email = email;
+        this.password = password;
+        LogInRaw logInRaw= new LogInRaw();
+        logInRaw.setLogin(this.email);
+        logInRaw.setPassword(this.password);
+
+        logInView.showLoading();
+
+        ApiClient.getMyApiClient().login(logInRaw, new Callback<LogInResponse>() {
             @Override
-            public void onClick(View v) {
-                mListener.deleteNoteORM(noteORMEntity);
+            public void success(LogInResponse loginResponse, Response response) {
+                loginSuccess(loginResponse,response);
+            }
+
+            @Override
+            public void failure(RetrofitError error)
+            {
+                String json="Error ";
+                try {
+                    json= new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
+                }catch (NullPointerException e) {}
+                Log.v(TAG, "json >>>> " + json);
+
+                loginError(json);
+
             }
         });
-	
-    //NoteActivity
-    @Override
-    public void deleteNoteORM(NoteORMEntity noteEntity) {
-        currentNoteORM= noteEntity;
-        MyDialogFragment myDialogFragment =new MyDialogFragment();
-        Bundle bundle= new Bundle();
-        bundle.putString("TITLE","¿Deseas eliminar esta nota?");
-        bundle.putInt("TYPE",100);
-        myDialogFragment.setArguments(bundle);
-        myDialogFragment.show(getFragmentManager(), "dialog");
+
     }
-    
+    public void loginSuccess(LogInResponse loginResponse, Response response){
+        if(loginResponse.isSuccess()){
+            UserEntity userEntity= new UserEntity();
+            userEntity.setEmail(loginResponse.getEmail());
+            userEntity.setName(loginResponse.getName());
+            userEntity.setObjectId(loginResponse.getObjectId());
+            userEntity.setToken(loginResponse.getToken());
+        }
+        logInView.hideLoading();
+        logInView.gotoMain();
+    }
+
+    public void loginError(String messageError){
+        logInView.hideLoading();
+        logInView.onMessageError(messageError);
+    }
+}
+ ```
+ 3.8 De la conexión recibimos 2 tipos de respuesta: un SUCCESS y FAILURE, en donde informamos a la vista si la autenticación fue exitosa o si ocurrio algún error.
+ 
+4 . Listar notas
+
+4.1  Revisamos la documentación en la sección Data : https://backendless.com/documentation/data/rest/data_retrieving_properties_of_the_d.htm
+ ```
+ method : GET
+ url : https://api.backendless.com/<version>/data/<table-name>/properties
+ response: 
+ [
+ {
+  "name": "updated",
+  "required": false,
+  "type": "DATETIME",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ },
+ {
+  "name": "created",
+  "required": false,
+  "type": "DATETIME",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ },
+ {
+  "name": "objectId",
+  "required": false,
+  "type": "STRING_ID",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ },
+ {
+  "name": "ownerId",
+  "required": false,
+  "type": "STRING",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ },
+ {
+  "name": "name",
+  "required": false,
+  "type": "STRING",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ },
+ {
+  "name": "age",
+  "required": false,
+  "type": "INT",
+  "defaultValue": null,
+  "relatedTable": null,
+  "customRegex": null,
+  "autoLoad": false
+ }
+]
+```
+4.2 Creamos una interfaz para declarar los métodos de la vista donde pintaremos las notas que están en backendless
+```
+public interface NotesView {
+
+    void showLoading();
+    void hideLoading();
+    Context getContext();
+
+    void onMessageError(String message);
+    void renderNotes(List<NoteEntity> notes);
+
+}
+```
+4.3 Creamos un presenter donde esta la lógica de conexión usando una petición GET
+
+```
+public class NotesPresenter {
+
+    private static final String TAG = "NotesPresenter";
+    private NotesView notesView;
+
+    public   void attachedView(NotesView notesView){
+        this.notesView = notesView;
+    }
+
+    public  void detachView(){
+        this.notesView=null;
+    }
+
+    public void loadNotes(){
+        notesView.showLoading();
+
+        ApiClient.getMyApiClient().notes(new Callback<NotesResponse>() {
+            @Override
+            public void success(NotesResponse notesResponse, Response response) {
+                    notesSuccess(notesResponse,response);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                notesError("");
+            }
+        });
+    }
+
+    private void notesSuccess(NotesResponse notesResponse, Response response) {
+        notesView.hideLoading();
+
+        if(notesResponse.isSuccess()){
+            List<NoteEntity> notes= notesResponse.getData();
+            notesView.renderNotes(notes);
+        }
+
+    }
+    private void notesError(String messageError){
+        notesView.hideLoading();
+        notesView.onMessageError(messageError);
+    }
+}
+```
+4.4 La actividad donde se pintan las notas quedará de la siguiente manera :
+```
+public class MainActivity extends ActionBarActivity implements NotesView {
+
+    private static final String TAG ="MainActivity" ;
+    private static final int ACTION_ADD=1;
+    private static final int ACTION_DETAIL=2;
+
+    private TextView tviLogout,tviUser;
+    private ListView lstNotes;
+    private Button btnAddNote;
+    private View rlayLoading,container;
+    private List<NoteEntity> lsNoteEntities;
+    private CRUDOperations crudOperations;
+    private NoteAdapter noteAdapter;
+
+    private NotesPresenter notesPresenter;
+
     @Override
-    public void onPositiveListener(Object object, int type) {
-        Log.v(TAG, "dialog positive");
-        if(currentNoteORM!=null) {
-            noteRepository.delete(currentNoteORM);
-            finish();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //populate();
+        notesPresenter= new NotesPresenter();
+        notesPresenter.attachedView(this);
+        init();
+        //loadData();
+        //loadCloud();
+    }
+
+    private void loadCloud() {
+        notesPresenter.loadNotes();
+    }
+
+    private void loadData() {
+        crudOperations= new CRUDOperations(new MyDatabase(this));
+        lsNoteEntities= crudOperations.getAllNotes();
+        noteAdapter= new NoteAdapter(this,lsNoteEntities);
+        lstNotes.setAdapter(noteAdapter);
+
+
+    }
+
+    private void populate() {
+
+        CRUDOperations crudOperations= new CRUDOperations(new MyDatabase(this));
+        crudOperations.addNote(new NoteEntity("Mi Nota","Esta es un nota ",null));
+        crudOperations.addNote(new NoteEntity("Segunda Nota","Esta es la segunds nota ",null));
+        crudOperations.addNote(new NoteEntity("Tercera Nota","Esta es la tercera nota ",null));
+        crudOperations.addNote(new NoteEntity("Cuarta Nota","Esta es la cuarta nota ",null));
+        crudOperations.addNote(new NoteEntity("Quinta Nota","Esta es la quinta nota ",null));
+        crudOperations.addNote(new NoteEntity("Sexta Nota","Esta es la sexta nota ",null));
+
+        Log.v(TAG, "populate " + crudOperations.getAllNotes());
+    }
+
+    private void init() {
+        tviLogout= (TextView)findViewById(R.id.tviLogout);
+        tviUser= (TextView)findViewById(R.id.tviUser);
+        lstNotes= (ListView)(findViewById(R.id.lstNotes));
+        btnAddNote= (Button)(findViewById(R.id.btnAddNote));
+        rlayLoading= (findViewById(R.id.rlayLoading));
+
+        //user Info
+        String username = PreferencesHelper.getUserSession(this);
+        if(username!=null)
+        {
+            tviUser.setText("Bienvenido "+ StringUtils.firstCapitalize(username));
+        }
+
+        //events
+        btnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoNote(ACTION_ADD, null);
+            }
+        });
+
+        lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                NoteEntity noteEntity = (NoteEntity) adapterView.getAdapter().getItem(i);
+                gotoNote(ACTION_DETAIL, noteEntity);
+            }
+        });
+
+        tviLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+    }
+
+    private void gotoNote(int action, NoteEntity noteEntity) {
+        Intent intent= new Intent(this,NoteActivity.class);
+
+        switch (action)
+        {
+            case ACTION_ADD:
+                    intent.putExtra("FRAGMENT",NoteActivity.ADD_NOTE);
+                    startActivity(intent);
+                break;
+            case ACTION_DETAIL:
+                intent.putExtra("FRAGMENT",NoteActivity.DETAIL_NOTE);
+                intent.putExtra("NOTE", noteEntity);
+                startActivity(intent);
+                break;
         }
     }
+
+    private void logout() {
+        PreferencesHelper.signOut(this);
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResumen");
+        //loadData();
+        loadCloud();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void showLoading() {
+        this.rlayLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        this.rlayLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void onMessageError(String message) {
+        Snackbar snackbar = Snackbar
+                .make(container,message, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+    }
+
+    @Override
+    public void renderNotes(List<NoteEntity> notes) {
+        lsNoteEntities= notes;
+        noteAdapter= new NoteAdapter(this,lsNoteEntities);
+        lstNotes.setAdapter(noteAdapter);
+    }
+}
 ```
 
-References 
+5 .  Referencias
+Librerías que vamos a usar, Retrofit, OkHttp y GSON
 
-* ORMLite [Link](http://ormlite.com/sqlite_java_android_orm.shtml)
-* ORMLite Ejemplos [Link](http://ormlite.com/android/examples/)
-  
-  
+- http://square.github.io/retrofit/
+- http://square.github.io/okhttp/
+- https://github.com/google/gson
+
