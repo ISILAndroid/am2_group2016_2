@@ -1,5 +1,6 @@
-# am2_group2016_2
-Curso de Aplicaciones Móviles II - Grupo 2016-I
+# am2_group2016_2 Lesson8
+
+Conexión Remota (S7-S8)
 
 # Conexión Remota
 En este sesión veremos como conectar nuestra aplicación Android con un Base de Datos que esta en la nube mediante servicios RESTFul, para lo cual usaremos Backendless.
