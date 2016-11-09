@@ -1,8 +1,8 @@
-# am2_group2016_1
+# am2_group2016_2
 Curso de Aplicaciones Móviles II - Grupo 2016-I
 
 # Conexión Remota
-En este sesión veremos como conectar nuestra aplicación Android con un Base de Datos que esta en la nube mediante servicios RESTFul, para lo cual usaremos backendless.
+En este sesión veremos como conectar nuestra aplicación Android con un Base de Datos que esta en la nube mediante servicios RESTFul, para lo cual usaremos Backendless.
 
 1. Crear un proyecto en backendless y agregar la tabla Note con los siguientes campos name (String) y description (String). Tambien usaremos la tabla User que viene por defecto  .
 
@@ -15,13 +15,10 @@ En este sesión veremos como conectar nuestra aplicación Android con un Base de
   2.2 Luego importar las librería para realizar la conexión, Retrofit , OkHttp y el conversor GSON . Esto en el gradle de nuestra APP
 ```
     //RETROFIT https://github.com/square/retrofit
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    
     //GSON https://github.com/google/gson
-    compile 'com.google.code.gson:gson:2.6.2'
-
-    //OKHTTP
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 ```
 3 . LogIn 
  3.1 Revisamos la documentación de la API Rest https://backendless.com/products/documentation/
@@ -79,73 +76,65 @@ public class LogInResponse {
 3.6 Creamos una clase llamada ApiClient donde vamos a declarar todas las llamadas al servidor. Recordar que deben usar las credenciales de la BD que crearon en BackendLess "Identificador de Aplicación" y "Clave secreta REST"
 
  ```
- public class ApiClient {
+     public class ApiClient {
 
-    private static final String TAG = "ApiClient";
-    private static final String PATH="http://api.backendless.com";
+        private static final String TAG = "ApiClient";
+        private static final String API_BASE_URL="http://api.backendless.com";
 
-    private static ServicesApiInterface servicesApiInterface;
+        private static ServicesApiInterface servicesApiInterface;
+        private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-    public static ServicesApiInterface getMyApiClient() {
 
-        if (servicesApiInterface == null) {
+        public static ServicesApiInterface getMyApiClient() {
 
-            RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint(PATH)
-                    .setClient(new OkClient(getClient()))
-                    .setLogLevel(RestAdapter.LogLevel.FULL)
-                    .build();
+            if (servicesApiInterface == null) {
 
-            servicesApiInterface = restAdapter.create(ServicesApiInterface.class);
+                Retrofit.Builder builder =new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create());
+
+                Retrofit retrofit = builder.client(httpClient.build()).build();
+                servicesApiInterface = retrofit.create(ServicesApiInterface.class);
+            }
+            return servicesApiInterface;
         }
-        return servicesApiInterface;
+
+        public interface ServicesApiInterface {
+
+            @Headers({
+                    "Content-Type: application/json",
+                    "application-id: B9D12B47-6B88-8471-FFAD-2B4FFD1EA100",
+                    "secret-key: 46C1AEC7-6BA7-D1C7-FF6A-FD9EA95C0C00",
+                    "application-type: REST"
+            })
+            //v1/users/login
+            @POST("/v1/users/login")
+            Call<LogInResponse> login(@Body LogInRaw raw);
+
+
+            @Headers({
+                    "Content-Type: application/json",
+                    "application-id: B9D12B47-6B88-8471-FFAD-2B4FFD1EA100",
+                    "secret-key: 46C1AEC7-6BA7-D1C7-FF6A-FD9EA95C0C00",
+                    "application-type: REST"
+            })
+            //v1/data/Notes
+            @GET("/v1/data/Notes")
+            Call<NotesResponse> notes();
+
+
+            @Headers({
+                    "Content-Type: application/json",
+                    "application-id: B9D12B47-6B88-8471-FFAD-2B4FFD1EA100",
+                    "secret-key: 46C1AEC7-6BA7-D1C7-FF6A-FD9EA95C0C00",
+                    "application-type: REST"
+            })
+            @POST("/v1/data/Notes")
+            Call<NoteResponse> addNote(@Body NoteRaw raw);
+
+        }
+
     }
-
-    public interface ServicesApiInterface {
-
-        ///<version name>/users/login
-        //@Headers({"Content-Type: application/json"})
-
-
-        @Headers({
-                "Content-Type: application/json",
-                "application-id: xxxxxxx",
-                "secret-key: xxxxxx",
-                "application-type: REST"
-        })
-        //v1/users/login
-        @POST("/v1/users/login")
-        void login(@Body LogInRaw raw, Callback<LogInResponse> callback);
-
-
-        @Headers({
-                "Content-Type: application/json",
-                "application-id: xxxxxx",
-                "secret-key: xxxxx",
-                "application-type: REST"
-        })
-        //v1/data/Notes
-        @GET("/v1/data/Notes")
-        void notes( Callback<NotesResponse> callback);
-
-
-        @Headers({
-                "Content-Type: application/json",
-                "application-id: xxxxx",
-                "secret-key: xxxxxx",
-                "application-type: REST"
-        })
-        @POST("/v1/data/Notes")
-        void addNote(@Body NoteRaw raw, Callback<NoteResponse> callback);
-    }
-
-    private static OkHttpClient getClient() {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(2, TimeUnit.MINUTES);
-        client.setReadTimeout(2, TimeUnit.MINUTES);
-        return client;
-    }
-}
  ```
 3.7  Vamos a considerar la actividad del LogIn como un vista sin lógica, solo con métodos para ser llamados por otra clase que se encargue de administrar estas acciones. Esta clase la vamos a llamar LogInPresenter y nuestra activity va implementar una insterfaz llamada LogInView 
  ```
@@ -162,68 +151,73 @@ public class LogInResponse {
  ```
  
  ```
- public class LogInPresenter {
+    public class LogInPresenter {
 
-    private static final String TAG = "LogInPresenter";
-    private LogInView logInView;
-    private String email;
-    private String password;
+        private static final String TAG = "LogInPresenter";
+        private final String ERROR_MESSAGE= "Ocurriò un error";
+        private LogInView logInView;
+        private String email;
+        private String password;
 
-    public   void attachedView(LogInView logInView){
-        this.logInView = logInView;
-    }
-
-    public  void detachView(){
-        this.logInView=null;
-    }
-
-    public void logIn(String email,String password) {
-        this.email = email;
-        this.password = password;
-        LogInRaw logInRaw= new LogInRaw();
-        logInRaw.setLogin(this.email);
-        logInRaw.setPassword(this.password);
-
-        logInView.showLoading();
-
-        ApiClient.getMyApiClient().login(logInRaw, new Callback<LogInResponse>() {
-            @Override
-            public void success(LogInResponse loginResponse, Response response) {
-                loginSuccess(loginResponse,response);
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-                String json="Error ";
-                try {
-                    json= new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
-                }catch (NullPointerException e) {}
-                Log.v(TAG, "json >>>> " + json);
-
-                loginError(json);
-
-            }
-        });
-
-    }
-    public void loginSuccess(LogInResponse loginResponse, Response response){
-        if(loginResponse.isSuccess()){
-            UserEntity userEntity= new UserEntity();
-            userEntity.setEmail(loginResponse.getEmail());
-            userEntity.setName(loginResponse.getName());
-            userEntity.setObjectId(loginResponse.getObjectId());
-            userEntity.setToken(loginResponse.getToken());
+        public   void attachedView(LogInView logInView){
+            this.logInView = logInView;
         }
-        logInView.hideLoading();
-        logInView.gotoMain();
-    }
 
-    public void loginError(String messageError){
-        logInView.hideLoading();
-        logInView.onMessageError(messageError);
+        public  void detachView(){
+            this.logInView=null;
+        }
+
+        public void logIn(String email,String password) {
+            this.email = email;
+            this.password = password;
+            LogInRaw logInRaw= new LogInRaw();
+            logInRaw.setLogin(this.email);
+            logInRaw.setPassword(this.password);
+
+            logInView.showLoading();
+
+            Call<LogInResponse> call = ApiClient.getMyApiClient().login(logInRaw);
+            call.enqueue(new Callback<LogInResponse>() {
+                @Override
+                public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
+                    if(response.isSuccessful()){
+
+                        loginSuccess(response.body());
+                    }else {
+                        loginError(ERROR_MESSAGE);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<LogInResponse> call, Throwable t) {
+                    String json="Error ";
+                    try {
+                        json= new StringBuffer().append(t.getMessage()).toString();
+                    }catch (NullPointerException e) {}
+                    Log.v(TAG, "json >>>> " + json);
+
+                    loginError(json);
+                }
+            });
+
+        }
+        public void loginSuccess(LogInResponse loginResponse){
+            if(loginResponse!=null){
+                UserEntity userEntity= new UserEntity();
+                userEntity.setEmail(loginResponse.getEmail());
+                userEntity.setName(loginResponse.getName());
+                userEntity.setObjectId(loginResponse.getObjectId());
+                userEntity.setToken(loginResponse.getToken());
+            }
+            logInView.hideLoading();
+            logInView.gotoMain();
+        }
+        public void loginError(String messageError){
+            logInView.hideLoading();
+            logInView.onMessageError(messageError);
+        }
     }
-}
  ```
  3.8 De la conexión recibimos 2 tipos de respuesta: un SUCCESS y FAILURE, en donde informamos a la vista si la autenticación fue exitosa o si ocurrio algún error.
  
@@ -307,49 +301,64 @@ public interface NotesView {
 4.3 Creamos un presenter donde esta la lógica de conexión usando una petición GET
 
 ```
-public class NotesPresenter {
+    public class NotesPresenter {
 
-    private static final String TAG = "NotesPresenter";
-    private NotesView notesView;
+        private static final String TAG = "NotesPresenter";
+        private final String ERROR_MESSAGE= "Ocurriò un error";
 
-    public   void attachedView(NotesView notesView){
-        this.notesView = notesView;
-    }
+        private NotesView notesView;
 
-    public  void detachView(){
-        this.notesView=null;
-    }
-
-    public void loadNotes(){
-        notesView.showLoading();
-
-        ApiClient.getMyApiClient().notes(new Callback<NotesResponse>() {
-            @Override
-            public void success(NotesResponse notesResponse, Response response) {
-                    notesSuccess(notesResponse,response);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                notesError("");
-            }
-        });
-    }
-
-    private void notesSuccess(NotesResponse notesResponse, Response response) {
-        notesView.hideLoading();
-
-        if(notesResponse.isSuccess()){
-            List<NoteEntity> notes= notesResponse.getData();
-            notesView.renderNotes(notes);
+        public   void attachedView(NotesView notesView){
+            this.notesView = notesView;
         }
 
+        public  void detachView(){
+            this.notesView=null;
+        }
+
+        public void loadNotes(){
+            notesView.showLoading();
+
+            Call<NotesResponse> call= ApiClient.getMyApiClient().notes();
+            call.enqueue(new Callback<NotesResponse>() {
+                @Override
+                public void onResponse(Call<NotesResponse> call, Response<NotesResponse> response) {
+                    if(response.isSuccessful()){
+
+                        notesSuccess(response.body());
+                    }else {
+                        notesError(ERROR_MESSAGE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<NotesResponse> call, Throwable t) {
+                    String json="Error ";
+                    try {
+                        json= new StringBuffer().append(t.getMessage()).toString();
+                    }catch (NullPointerException e) {}
+                    Log.v(TAG, "json >>>> " + json);
+
+                    notesError(json);
+                }
+            });
+        }
+
+        private void notesSuccess(NotesResponse notesResponse) {
+            notesView.hideLoading();
+
+            if(notesResponse!=null){
+                List<NoteEntity> notes= notesResponse.getData();
+                notesView.renderNotes(notes);
+            }
+
+        }
+        private void notesError(String messageError){
+            notesView.hideLoading();
+            notesView.onMessageError(messageError);
+        }
     }
-    private void notesError(String messageError){
-        notesView.hideLoading();
-        notesView.onMessageError(messageError);
-    }
-}
+
 ```
 4.4 La actividad donde se pintan las notas quedará de la siguiente manera :
 ```
