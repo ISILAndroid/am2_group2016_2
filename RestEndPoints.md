@@ -26,5 +26,22 @@
        "password" : value,
       }
     ```
+    Response Body :
+    
+    ```
+          {
+        "lastLogin": 1478740510231,
+        "created": 1464809950000,
+        "name": "eduardo",
+        "___class": "Users",
+        "user-token": "1748E364-B2CF-7DC6-FF97-AD08F29A5300",
+        "ownerId": "D82B3021-9EC7-36B5-FFC2-859155CD0300",
+        "login": null,
+        "updated": null,
+        "email": "isil@qd.pe",
+        "objectId": "D82B3021-9EC7-36B5-FFC2-859155CD0300",
+        "__meta": "{\"relationRemovalIds\":{},\"selectedProperties\":[\"__updated__meta\",\"password\",\"created\",\"name\",\"___class  \",\"ownerId\",\"login\",\"updated\",\"email\",\"objectId\"],\"relatedObjects\":{}}"
+      }
+    ```
     
   
