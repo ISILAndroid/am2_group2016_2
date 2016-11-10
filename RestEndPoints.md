@@ -8,7 +8,11 @@
     
   # Pasos 
   1. Crear aplicación  de Backenless
-    - Modificar la tabla User
+    - Modificar la tabla Users
+      email(STRING) | name(STRING)  | password(STRING) | objectId(STRING)
+      ------------ | ------------- | ------------- | -------------
+      isil@qd.pe | eduardo | 123456 | D82B3021-9EC7-36B5-FFC2-859155CD0300
+
     - Crear la tabla Notes
     - Ingresar un par de registros
     
