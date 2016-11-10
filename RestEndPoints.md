@@ -15,6 +15,10 @@
       isil@qd.pe | eduardo | 123456 | D82B3021-9EC7-36B5-FFC2-859155CD0300
 
     - Crear la tabla Notes
+       description(STRING) | name(STRING)  | objectId(STRING)
+      ------------ | ------------- | ------------- | -------------
+      Enviar finales | finales Isil |5810CFC2-919A-41F8-FFE0-D8B66ED6FF00
+      
     - Ingresar un par de registros
     
   2. Documentación 
