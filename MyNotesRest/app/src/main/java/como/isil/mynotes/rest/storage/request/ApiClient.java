@@ -7,6 +7,7 @@ import como.isil.mynotes.rest.storage.entity.NoteResponse;
 import como.isil.mynotes.rest.storage.entity.NotesResponse;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,7 +26,7 @@ public class ApiClient {
     private static final String API_BASE_URL="http://api.backendless.com";
 
     private static ServicesApiInterface servicesApiInterface;
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private static OkHttpClient.Builder httpClient;
 
 
     public static ServicesApiInterface getMyApiClient() {
@@ -35,6 +36,8 @@ public class ApiClient {
             Retrofit.Builder builder =new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create());
+            httpClient =new OkHttpClient.Builder();
+            httpClient.addInterceptor(interceptor());
 
             Retrofit retrofit = builder.client(httpClient.build()).build();
             servicesApiInterface = retrofit.create(ServicesApiInterface.class);
@@ -77,4 +80,13 @@ public class ApiClient {
 
     }
 
+    /*private static OkHttpClient.Builder client(){
+        if(httpClient==null)httpClient=new OkHttpClient.Builder();
+        return httpClient;
+    }*/
+    private  static  HttpLoggingInterceptor interceptor(){
+        HttpLoggingInterceptor httpLoggingInterceptor= new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return httpLoggingInterceptor;
+    }
 }
