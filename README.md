@@ -50,6 +50,10 @@ Conexión Remota (S7-S8)
     ```
   2.  Probar en Postman
   
+     ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson9/notes.PNG)
+       
+     ![](https://github.com/ISILAndroid/am2_group2016_2/blob/Lesson9/addnote.PNG)
+     
   3. MVP
    - Nuestra View sería una interfaz "AddNoteView"
       ```
